@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="manifest" href="manifest.json" />
+    <!-- ios support -->
+    <link rel="apple-touch-icon" href="images/icons/icon-72x72.png" />
+    <link rel="apple-touch-icon" href="images/icons/icon-96x96.png" />
+    <link rel="apple-touch-icon" href="images/icons/icon-128x128.png" />
+    <link rel="apple-touch-icon" href="images/icons/icon-144x144.png" />
+    <link rel="apple-touch-icon" href="images/icons/icon-152x152.png" />
+    <link rel="apple-touch-icon" href="images/icons/icon-192x192.png" />
+    <link rel="apple-touch-icon" href="images/icons/icon-384x384.png" />
+    <link rel="apple-touch-icon" href="images/icons/icon-512x512.png" />
+    <meta name="apple-mobile-web-app-status-bar" content="#db4938" />
+    <meta name="theme-color" content="#db4938" />
+
+    <title>Document</title>
+    <link href="style.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="container-fluid container-xxl bg-dark">
+    <div id="app" class="">
+        <!-- FORM -->
+        <div id="add" class="my-2 alert alert-light">
+            <div class="fs-3">Add Anime</div>
+            <div class="row g-1 row-cols-2 row-cols-md-3 row-cols-lg-5">
+                <div class="col">
+                    <input type="text" class="form-control" id="animeName" placeholder="Anime name">
+                </div>
+                <div class="col">
+                    <input type="number" class="form-control" id="episodeNumber" placeholder="Episode number">
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control" id="watchUrl" placeholder="Watch URL">
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control" id="coverUrl" placeholder="Cover image URL">
+                </div>
+                <button class="btn btn-success" type="button" onclick="addNewAnime()">Add</button>
+            </div>
+
+        </div>
+        <div id="list" class="row row-cols-2 row-cols-md-3 row-cols-lg-5">
+
+        </div>
+
+    </div>
+    <script src="script.js">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

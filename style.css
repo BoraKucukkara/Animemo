@@ -1,0 +1,28 @@
+#list {
+    animation: fade-up .5s ease forwards;
+    perspective: 2rem;
+}
+
+@keyframes fade-up {
+    from {
+        transform: translateY(2rem);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0rem);
+        opacity: 1;
+    }
+
+}
+
+* {
+    transition: all .3sec;
+}
+
+
+.anime-name {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
