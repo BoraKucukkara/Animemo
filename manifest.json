@@ -1,6 +1,6 @@
 {
-    "name": "Animemory",
-    "short_name": "animemory",
+    "name": "Animemo",
+    "short_name": "animemo",
     "start_url": "index.html",
     "display": "standalone",
     "background_color": "#fdfdfd",
