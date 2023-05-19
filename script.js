@@ -56,11 +56,14 @@ const list = document.getElementById("list")
 async function getList() {
     if (myAnimeList.length == 0) {
         let emptyPageTemplate = `
-        <p>Add here some anime</p>
-        <button class="btn btn-primary rounded-circle ui-btn--add" data-bs-toggle="modal"
+        <div class="w-100 vh-100 d-flex flex-column justify-content-center align-items-center text-center">
+        <div class="display-1 fw-bold">Animemo</div>
+        <p>Add here some anime series</p>
+        <button class="btn btn-lg btn-info rounded-circle w-auto" data-bs-toggle="modal"
                 data-bs-target="#addAnimeModal">
                 <i class="fa-solid fa-plus"></i>
-            </button>
+        </button>
+        </div>
         `
         list.insertAdjacentHTML("beforeend", emptyPageTemplate)
     }
@@ -94,7 +97,7 @@ async function getList() {
                                         <div class="${status.class} small"><i class="fa-solid fa-eye"></i> ${status.text}</div>
                                         <div class="d-flex justify-content-between align-items-center">
                                             <button type="button" onclick="countDown(${anime.id})" class="btn btn-sm">-</button>
-                                            <span class="px-2 fw-bold fs-2">${anime.watched}</span>
+                                            <span class="px-2 fw-bold fs-2 text-warning">${anime.watched}</span>
                                             <button type="button" onclick="countUp(${anime.id})" class="btn btn-sm">+</button>
                                         </div>
                                     </div>
@@ -105,10 +108,20 @@ async function getList() {
                                         <div>${anime.episodes}</div>
                                     </div>
                                 </li>
-                                <li class="list-group-item">
+                                <li class="list-group-item position-relative">
                                     <div class="d-flex flex-column text-secondary small">
                                         <div><i class="fa-regular fa-calendar-check"></i> Last Watched</div>
                                         <div>${anime.lastWatched}</div>
+                                    </div>
+                                    <div class="position-absolute end-0 bottom-0">
+                                        <div class="btn-group">
+                                            <div class="p-3 small" data-bs-toggle="dropdown" aria-expanded="false" style="cursor:pointer">
+                                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                                            </div>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item small" onclick="removeAnime('${anime.id}')" href="#"><i class="fa-solid fa-trash"></i> Remove</a></li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </li>
                             </ul>
@@ -180,6 +193,15 @@ function pushList(payload) {
     list.innerHTML = ""
     getList()
 }
+
+// Remove Anime from list
+function removeAnime(id) {
+    let itemIndex = myAnimeList.findIndex(list => list.id == id)
+    myAnimeList.splice(itemIndex, 1)
+    list.innerHTML = ""
+    getList()
+}
+
 
 // Search Anime from kitsu API
 let searchResults = []
