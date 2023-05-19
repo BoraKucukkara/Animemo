@@ -25,15 +25,8 @@
     overflow: hidden;
 }
 
-.ui-btn--add {
-    width: 3rem;
-    height: 3rem;
-    position: fixed;
-    z-index: 3;
-    right: 1rem;
-    bottom: 1rem;
-    padding: 0;
-    margin: 0;
+.watched-count {
+    color: #ff5e00
 }
 
 /* btn info */

@@ -1,4 +1,4 @@
-/*  PWA Service worker register */
+/*  PWA Service worker register 
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", function () {
         navigator.serviceWorker
@@ -6,7 +6,7 @@ if ("serviceWorker" in navigator) {
             .then(res => console.log("service worker registered"))
             .catch(err => console.log("service worker not registered", err))
     })
-}
+} */
 // wait for the DOM
 document.addEventListener("DOMContentLoaded", checkLocalStorage)
 // current list, syncs with localStorage
@@ -97,13 +97,13 @@ async function getList() {
                                         <div class="${status.class} small"><i class="fa-solid fa-eye"></i> ${status.text}</div>
                                         <div class="d-flex justify-content-between align-items-center">
                                             <button type="button" onclick="countDown(${anime.id})" class="btn btn-sm">-</button>
-                                            <span class="px-2 fw-bold fs-2 text-warning">${anime.watched}</span>
+                                            <span class="px-2 fw-bold fs-2 watched-count">${anime.watched}</span>
                                             <button type="button" onclick="countUp(${anime.id})" class="btn btn-sm">+</button>
                                         </div>
                                     </div>
                                 </li>
-                                <li class="list-group-item">
-                                    <div class="d-flex justify-content-between">
+                                <li class="list-group-item list-group-item-light">
+                                    <div class="d-flex justify-content-between text-secondary">
                                         <div class="small"><i class="fa-solid fa-film"></i> Episodes</div>
                                         <div>${anime.episodes}</div>
                                     </div>
@@ -160,7 +160,6 @@ function countDown(id) {
     let itemIndex = myAnimeList.findIndex(list => list.id == id)
     if (myAnimeList[itemIndex].watched > 0) {
         myAnimeList[itemIndex].watched--
-        myAnimeList[itemIndex].lastWatched = new Date().toLocaleString()
     }
     getList()
 }
@@ -171,13 +170,16 @@ class NewAnime {
         this.name = name
         this.episode = episode
         this.img = img
-        this.date = new Date().toLocaleString()
+        this.date = "-"//new Date().toLocaleString()
         this.watched = 0
         this.id = Math.floor(Math.random() * 999999999)
     }
 }
-function addNewAnime(name, episode, img) {
+function addNewAnime(name, episode, img, id) {
     let payload = new NewAnime(name, episode, img)
+    let btnSuccess = document.getElementById(id)
+    btnSuccess.classList.remove = "btn-info"
+    btnSuccess.classList.add = "btn-success"
     pushList(payload)
 }
 function pushList(payload) {
@@ -189,10 +191,11 @@ function pushList(payload) {
         "lastWatched": payload.date,
         "id": payload.id
     }
-    myAnimeList.push(animeListItem)
+    myAnimeList.unshift(animeListItem)
     list.innerHTML = ""
     getList()
 }
+
 
 // Remove Anime from list
 function removeAnime(id) {
@@ -200,6 +203,22 @@ function removeAnime(id) {
     myAnimeList.splice(itemIndex, 1)
     list.innerHTML = ""
     getList()
+}
+
+// Sort List Function
+function sortBy(sortType) {
+    let sortedList;
+    if (sortType == "name") {
+        sortedList = myAnimeList.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
+    } else if (sortType == "mostwatched") {
+        sortedList = myAnimeList.sort((a, b) => b.watched - a.watched);
+    } else if (sortType == "lastwatched") {
+        sortedList = myAnimeList.sort((a, b) => (a.lastWatched > b.lastWatched) ? -1 : ((b.lastWatched > a.lastWatched) ? 1 : 0))
+    }
+    list.innerHTML = ""
+    myAnimeList = sortedList
+    getList()
+
 }
 
 
@@ -224,8 +243,8 @@ async function fetchAnimeData() {
                     <div class="fw-bold">${result.attributes.titles.en_jp}</div>
                     <div class="small">${result.attributes.canonicalTitle}</div>
                     <span class="small">Episodes: ${result.attributes.episodeCount}</span>
-                    <button class="rounded-circle position-absolute btn btn-sm btn-info end-0 bottom-0 m-2"
-                    onclick="addNewAnime('${result.attributes.titles.en_jp}', ${result.attributes.episodeCount}, '${result.attributes.posterImage.medium}')">
+                    <button id="${result.id}" class="rounded-circle position-absolute btn btn-sm btn-info end-0 bottom-0 m-2"
+                    onclick="addNewAnime('${result.attributes.titles.en_jp}', ${result.attributes.episodeCount}, '${result.attributes.posterImage.medium}', ${result.id})">
                     <i class="fa-solid fa-plus"></i>
                 </button>
                 </div>
@@ -234,11 +253,11 @@ async function fetchAnimeData() {
             resultList.insertAdjacentHTML("beforeend", li)
         }
     } else {
-        resultList.innerHTML = "Nothing found"
+        resultList.innerHTML = "OOPS! Nothing found"
     }
 }
 
-// Dark mode conrolls
+// Dark mode controls
 let checkbox = document.querySelector("input[name=darkModeToggle]")
 let mainHTML = document.querySelector("html")
 let metaTheme = document.querySelector("meta[name=theme-color]")
@@ -253,17 +272,15 @@ checkbox.addEventListener('change', function () {
 });
 
 
-
-
-
 /* TODO
-    -   Remove anime button
-    -   Sort by filters
+    +   Remove anime frm list
+    -   Search input keypress search
+    +   Sort by filters
     -   Add filter and color settings to localStorage and check before page load
     -   Dont refresh whole list while count up or down
         (set innerHTML and update localStorage)
     -   Add about section
-    -   Internet connection check
+    -   Internet connection check PWA
     -   APP ICON
     -   
 

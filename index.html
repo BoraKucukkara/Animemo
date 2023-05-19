@@ -32,9 +32,9 @@
                 <li>
                     <h6 class="dropdown-header">Sort by</h6>
                 </li>
-                <li><a class="dropdown-item" href="#">Name</a></li>
-                <li><a class="dropdown-item" href="#">Last Watched</a></li>
-                <li><a class="dropdown-item" href="#">Most Watched</a></li>
+                <li><a class="dropdown-item" href="#" onclick="sortBy('name')">Name</a></li>
+                <li><a class="dropdown-item" href="#" onclick="sortBy('lastwatched')">Last Watched</a></li>
+                <li><a class="dropdown-item" href="#" onclick="sortBy('mostwatched')">Most Watched</a></li>
                 <li>
                     <hr class="dropdown-divider">
                 </li>
@@ -59,7 +59,6 @@
 
         </div>
 
-
         <!-- Modal -->
         <div class="modal fade" id="addAnimeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-fullscreen-sm-down">
@@ -76,9 +75,20 @@
                         </div>
 
                         <ul class="list-group py-3" id="resultList">
-
-
+                            <!--Search results-->
                         </ul>
+
+                        <div id="animeAddFeedback"
+                            class="toast position-fixed bottom-0 start-50 align-items-center text-bg-success border-0 show"
+                            role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="d-flex">
+                                <div class="toast-body">
+                                    <i class="fa-solid fa-check"></i> Anime added to the list.
+                                </div>
+                                <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                                    data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                        </div>
 
                     </div>
                     <div class="modal-footer">
@@ -87,6 +97,8 @@
                 </div>
             </div>
         </div>
+
+
     </div>
     <script src="script.js">
     </script>
