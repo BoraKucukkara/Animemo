@@ -1,6 +1,6 @@
 {
-    "name": "My Animes",
-    "short_name": "myanimes",
+    "name": "Animemory",
+    "short_name": "animemory",
     "start_url": "index.html",
     "display": "standalone",
     "background_color": "#fdfdfd",

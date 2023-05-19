@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 
 <head>
     <meta charset="UTF-8">
@@ -9,48 +9,84 @@
 
     <link rel="manifest" href="manifest.json" />
     <!-- ios support -->
-    <link rel="apple-touch-icon" href="images/icons/icon-72x72.png" />
-    <link rel="apple-touch-icon" href="images/icons/icon-96x96.png" />
-    <link rel="apple-touch-icon" href="images/icons/icon-128x128.png" />
-    <link rel="apple-touch-icon" href="images/icons/icon-144x144.png" />
-    <link rel="apple-touch-icon" href="images/icons/icon-152x152.png" />
-    <link rel="apple-touch-icon" href="images/icons/icon-192x192.png" />
-    <link rel="apple-touch-icon" href="images/icons/icon-384x384.png" />
-    <link rel="apple-touch-icon" href="images/icons/icon-512x512.png" />
-    <meta name="apple-mobile-web-app-status-bar" content="#db4938" />
-    <meta name="theme-color" content="#db4938" />
+    <link rel="apple-touch-icon" href="assets/app-icon.png" />
+    <link rel="icon" type="image/png" href="assets/app-icon.png" />
+    <meta name="apple-mobile-web-app-status-bar" content="#000" />
+    <meta name="theme-color" content="#000" />
 
-    <title>Document</title>
+    <title>Animemory</title>
     <link href="style.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/7ed19c3a98.js" crossorigin="anonymous"></script>
 </head>
 
-<body class="container-fluid container-xxl bg-dark">
+<body class="container-fluid">
     <div id="app" class="">
-        <!-- FORM -->
-        <div id="add" class="my-2 alert alert-light">
-            <div class="fs-3">Add Anime</div>
-            <div class="row g-1 row-cols-2 row-cols-md-3 row-cols-lg-5">
-                <div class="col">
-                    <input type="text" class="form-control" id="animeName" placeholder="Anime name">
+        <!-- Menu dropdown -->
+        <div class="dropup position-fixed bottom-0 end-0 m-4" style="z-index:99">
+            <button class="btn btn-secondary  dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <ul class="dropdown-menu pt-0">
+                <li>
+                    <h6 class="dropdown-header">Sort by</h6>
+                </li>
+                <li><a class="dropdown-item" href="#">Name</a></li>
+                <li><a class="dropdown-item" href="#">Last Watched</a></li>
+                <li><a class="dropdown-item" href="#">Most Watched</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li class="d-flex justify-content-between align-items-center">
+                    <div class="small ms-3">Dark Mode</div>
+                    <div class="form-check form-switch form-control-lg">
+                        <input class="form-check-input " type="checkbox" role="switch" name="darkModeToggle" checked>
+                    </div>
+                </li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li class="p-2 ">
+                    <button class="btn btn-info w-100" data-bs-toggle="modal" data-bs-target="#addAnimeModal">
+                        <i class="fa-solid fa-plus"></i> Add Anime
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <!--Anime List Section-->
+        <div id="list" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 row-cols-xxl-6">
+
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="addAnimeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen-sm-down">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add new anime</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="col d-flex">
+                            <input type="text" class="form-control me-2" id="searchText" placeholder="Anime name">
+                            <button class="btn btn-success" type="button" onclick="fetchAnimeData()">Search</button>
+                        </div>
+
+                        <ul class="list-group py-3" id="resultList">
+
+
+                        </ul>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
                 </div>
-                <div class="col">
-                    <input type="number" class="form-control" id="episodeNumber" placeholder="Episode number">
-                </div>
-                <div class="col">
-                    <input type="text" class="form-control" id="watchUrl" placeholder="Watch URL">
-                </div>
-                <div class="col">
-                    <input type="text" class="form-control" id="coverUrl" placeholder="Cover image URL">
-                </div>
-                <button class="btn btn-success" type="button" onclick="addNewAnime()">Add</button>
             </div>
-
         </div>
-        <div id="list" class="row row-cols-2 row-cols-md-3 row-cols-lg-5">
-
-        </div>
-
     </div>
     <script src="script.js">
     </script>

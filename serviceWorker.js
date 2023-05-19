@@ -1,4 +1,4 @@
-const staticDevCoffee = "my-animes-v1"
+const staticDevCoffee = "animemory-v1"
 const assets = [
     "/",
     "/index.html",
