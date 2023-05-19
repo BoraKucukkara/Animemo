@@ -4,12 +4,11 @@
 
 #list {
     animation: fade-up .5s ease forwards;
-    perspective: 2rem;
 }
 
 @keyframes fade-up {
     from {
-        transform: translateY(2rem);
+        transform: translateY(3rem);
         opacity: 0;
     }
 
@@ -23,10 +22,25 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+
 }
 
 .watched-count {
     color: #ff5e00
+}
+
+.text-orange {
+    color: #ff5e00 !important
+}
+
+.bg-orange {
+    background: #ff5e00 !important
+}
+
+
+.border-orange {
+    border: 2px solid #ff5e00 !important;
+    border-color: #ff5e00 !important;
 }
 
 /* btn info */

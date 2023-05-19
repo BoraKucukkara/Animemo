@@ -73,26 +73,27 @@ async function getList() {
         let status = {};
         if (anime.episodes == anime.watched) {
             status.text = "Completed"
-            status.class = "text-success fw-bold"
+            status.class = "text-orange fw-bold"
+            status.border = "text-orange"
         } else {
             status.text = "Watched"
             status.class = "text-secondary"
+            status.border = ""
         }
         // anime card
         let li = `
-                <div class="p-1 list-items " id="${anime.id}">
-                    <div class="rounded-3 d-flex flex-sm-column shadow overflow-hidden
-                    border border-2 m-1 p-0">
-                        <div class="col-4 col-sm-12">
-                            <img src="${anime.image}"
-                                class="card-img-bottom" alt="..." style="aspect-ratio:2/3">
+                <div class=" list-items " id="${anime.id}">
+                    <div class="rounded-3 d-flex flex-sm-column shadow-sm overflow-hidden
+                    border border-2 ${status.border}">
+                        <div class="col-4 col-sm-12" style="background-image:url('${anime.image}');background-size: cover; aspect-ratio:2/3">
+                            
                         </div>
                         <div class="col-8 col-sm-12 d-flex flex-column justify-content-between">
                             <div class="p-2 text-center">
                                 <div class="anime-name fs-5 fw-bold ">${anime.name}</div>
                             </div>
                             <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
+                            <li class="list-group-item bg-transparent">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="${status.class} small"><i class="fa-solid fa-eye"></i> ${status.text}</div>
                                         <div class="d-flex justify-content-between align-items-center">
@@ -102,13 +103,13 @@ async function getList() {
                                         </div>
                                     </div>
                                 </li>
-                                <li class="list-group-item list-group-item-light">
+                                <li class="list-group-item bg-transparent">
                                     <div class="d-flex justify-content-between text-secondary">
                                         <div class="small"><i class="fa-solid fa-film"></i> Episodes</div>
                                         <div>${anime.episodes}</div>
                                     </div>
                                 </li>
-                                <li class="list-group-item position-relative">
+                                <li class="list-group-item position-relative bg-transparent">
                                     <div class="d-flex flex-column text-secondary small">
                                         <div><i class="fa-regular fa-calendar-check"></i> Last Watched</div>
                                         <div>${anime.lastWatched}</div>
@@ -177,9 +178,12 @@ class NewAnime {
 }
 function addNewAnime(name, episode, img, id) {
     let payload = new NewAnime(name, episode, img)
-    let btnSuccess = document.getElementById(id)
-    btnSuccess.classList.remove = "btn-info"
-    btnSuccess.classList.add = "btn-success"
+    let addBtn = document.getElementById(id)
+    addBtn.classList.remove("btn-info")
+    addBtn.disabled = true
+    addBtn.classList.add("btn-success")
+    addBtn.firstElementChild.classList.remove("fa-plus")
+    addBtn.firstElementChild.classList.add("fa-check")
     pushList(payload)
 }
 function pushList(payload) {
@@ -243,7 +247,7 @@ async function fetchAnimeData() {
                     <div class="fw-bold">${result.attributes.titles.en_jp}</div>
                     <div class="small">${result.attributes.canonicalTitle}</div>
                     <span class="small">Episodes: ${result.attributes.episodeCount}</span>
-                    <button id="${result.id}" class="rounded-circle position-absolute btn btn-sm btn-info end-0 bottom-0 m-2"
+                    <button id="${result.id}" class="rounded-circle position-absolute btn btn-sm btn-info end-0 bottom-0 m-2" style="width:2rem; height:2rem"
                     onclick="addNewAnime('${result.attributes.titles.en_jp}', ${result.attributes.episodeCount}, '${result.attributes.posterImage.medium}', ${result.id})">
                     <i class="fa-solid fa-plus"></i>
                 </button>

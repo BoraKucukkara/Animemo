@@ -20,42 +20,52 @@
     <script src="https://kit.fontawesome.com/7ed19c3a98.js" crossorigin="anonymous"></script>
 </head>
 
-<body class="container-fluid">
+<body class="container-fluid p-4">
     <div id="app" class="">
-        <!-- Menu dropdown -->
-        <div class="dropup position-fixed bottom-0 end-0 m-4" style="z-index:99">
-            <button class="btn btn-secondary  dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-            <ul class="dropdown-menu pt-0">
-                <li>
-                    <h6 class="dropdown-header">Sort by</h6>
-                </li>
-                <li><a class="dropdown-item" href="#" onclick="sortBy('name')">Name</a></li>
-                <li><a class="dropdown-item" href="#" onclick="sortBy('lastwatched')">Last Watched</a></li>
-                <li><a class="dropdown-item" href="#" onclick="sortBy('mostwatched')">Most Watched</a></li>
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
-                <li class="d-flex justify-content-between align-items-center">
-                    <div class="small ms-3">Dark Mode</div>
-                    <div class="form-check form-switch form-control-lg">
-                        <input class="form-check-input " type="checkbox" role="switch" name="darkModeToggle" checked>
-                    </div>
-                </li>
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
-                <li class="p-2 ">
-                    <button class="btn btn-info w-100" data-bs-toggle="modal" data-bs-target="#addAnimeModal">
-                        <i class="fa-solid fa-plus"></i> Add Anime
-                    </button>
-                </li>
-            </ul>
-        </div>
+        <header class="mb-3 d-flex justify-content-between align-items-center">
+            <div class="">
+                <img class="" style="height:3rem;" src="assets/app-icon.png" />
+                <span class="fw-bold fs-4">Animemo</span>
+            </div>
+            <div>animes <span class="badge bg-orange">0</span></div>
+            <!-- Menu dropdown -->
+            <div class="dropdown" style="z-index:99">
+                <button class="btn btn-secondary shadow dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <ul class="dropdown-menu pt-0 shadow ">
+                    <li>
+                        <h6 class="dropdown-header">Sort by</h6>
+                    </li>
+                    <li><a class="dropdown-item" href="#" onclick="sortBy('name')">Name</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="sortBy('lastwatched')">Last Watched</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="sortBy('mostwatched')">Most Watched</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li class="d-flex justify-content-between align-items-center">
+                        <div class="small ms-3">Dark Mode</div>
+                        <div class="form-check form-switch form-control-lg">
+                            <input class="form-check-input " type="checkbox" role="switch" name="darkModeToggle"
+                                checked>
+                        </div>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li class="p-2 ">
+                        <button class="btn btn-info w-100" data-bs-toggle="modal" data-bs-target="#addAnimeModal">
+                            <i class="fa-solid fa-plus"></i> Add Anime
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </header>
+
         <!--Anime List Section-->
-        <div id="list" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 row-cols-xxl-6">
+        <div id="list"
+            class="row g-4 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 row-cols-xxl-6 mb-4">
 
         </div>
 
@@ -64,32 +74,28 @@
             <div class="modal-dialog modal-fullscreen-sm-down">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add new anime</h1>
+                        <div class="modal-title d-flex" id="exampleModalLabel">
+                            <img class="" style="height: 3rem;" src="assets/app-icon.png" />
+                            <div>
+                                <div class="fs-6 text-secondary-emphasis mt-1">Add new anime to Animemo</div>
+                                <span class="small text-secondary-emphasis">Search anime database and add to your
+                                    list</span>
+                            </div>
+                        </div>
+
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
 
                         <div class="col d-flex">
-                            <input type="text" class="form-control me-2" id="searchText" placeholder="Anime name">
-                            <button class="btn btn-success" type="button" onclick="fetchAnimeData()">Search</button>
+                            <input type="text" class="form-control me-2 border-orange" id="searchText"
+                                placeholder="Anime name">
+                            <button class="btn btn-info" type="button" onclick="fetchAnimeData()">Search</button>
                         </div>
 
                         <ul class="list-group py-3" id="resultList">
                             <!--Search results-->
                         </ul>
-
-                        <div id="animeAddFeedback"
-                            class="toast position-fixed bottom-0 start-50 align-items-center text-bg-success border-0 show"
-                            role="alert" aria-live="assertive" aria-atomic="true">
-                            <div class="d-flex">
-                                <div class="toast-body">
-                                    <i class="fa-solid fa-check"></i> Anime added to the list.
-                                </div>
-                                <button type="button" class="btn-close btn-close-white me-2 m-auto"
-                                    data-bs-dismiss="toast" aria-label="Close"></button>
-                            </div>
-                        </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
