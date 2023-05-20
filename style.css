@@ -1,20 +1,89 @@
 * {
-    transition: all .3sec;
+    transition: background .2s ease !important;
 }
 
 #list {
     animation: fade-up .5s ease forwards;
 }
 
-@keyframes fade-up {
+.editpanel {
+    overflow: hidden !important;
+    position: absolute !important;
+    backdrop-filter: blur(1rem);
+    background: #00000055 !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: .5rem;
+    inset: 0;
+    animation: fade-in .3sec ease forwards;
+}
+
+@keyframes fade-inp {
     from {
-        transform: translateY(3rem);
         opacity: 0;
     }
 
     to {
-        transform: translateY(0rem);
         opacity: 1;
+    }
+}
+
+.fade-up {
+    animation: fade-up .5s ease forwards;
+}
+
+.fade-down {
+    animation: fade-down .5s ease forwards;
+}
+
+@keyframes fade-up {
+    from {
+        transform: translateX(20rem);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0rem);
+        opacity: 1;
+    }
+}
+
+@keyframes fade-down {
+    from {
+        transform: translateX(-20rem);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0rem);
+        opacity: 1;
+    }
+}
+
+@media screen and (width > 576px) {
+    @keyframes fade-up {
+        from {
+            transform: translateY(20rem);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0rem);
+            opacity: 1;
+        }
+    }
+
+    @keyframes fade-down {
+        from {
+            transform: translateY(-20rem);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0rem);
+            opacity: 1;
+        }
     }
 }
 
@@ -25,7 +94,7 @@
 }
 
 .watched-count {
-    color: #ff5e00
+    color: #ff5e00;
 }
 
 .text-orange {
@@ -36,9 +105,10 @@
     background: #ff5e00 !important
 }
 
-.border-orange {
-    border: 2px solid #ff5e00 !important;
-    border-color: #ff5e00 !important;
+.item-blink {
+    border: 2px solid #cccccc33 !important;
+    border-color: #cccccc33 !important;
+    background-color: #cccccc33 !important;
 }
 
 .sort-by-item::before {

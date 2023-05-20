@@ -15,6 +15,15 @@ let myAnimeList = []
 
 // set main list
 const list = document.getElementById("list")
+
+let searchResults = []
+const resultList = document.querySelector("#resultList")
+
+// color scheme constants
+const checkbox = document.querySelector("input[name=darkModeToggle]")
+const mainHTML = document.querySelector("html")
+const metaTheme = document.querySelector("meta[name=theme-color]")
+
 // checks if any local data and syncs with array
 checkLocalStorage();
 
@@ -31,13 +40,34 @@ function checkSettings() {
     if (localStorage.getItem("userSettings")) {
         userSettings = JSON.parse(localStorage.getItem("userSettings"))
         sortBy(userSettings.filterType)
-        console.log("settings parsed")
+        if (userSettings.colorScheme == "dark") {
+            checkbox.checked = true
+            mainHTML.setAttribute("data-bs-theme", "dark")
+        } else if (userSettings.colorScheme == "light") {
+            mainHTML.setAttribute("data-bs-theme", "light")
+            checkbox.checked = false
+        }
     } else {
-        console.log(" no settings")
+        sortBy(userSettings.filterType)
     }
 }
 
-function getList() {
+// Dark mode controls
+checkbox.addEventListener('change', function () {
+    if (this.checked) {
+        mainHTML.setAttribute("data-bs-theme", "dark")
+        metaTheme.setAttribute("content", "#21252a")
+        userSettings.colorScheme = "dark"
+    } else {
+        mainHTML.setAttribute("data-bs-theme", "light")
+        metaTheme.setAttribute("content", "#fff")
+        userSettings.colorScheme = "light"
+    }
+    saveSettings()
+});
+
+
+async function getList() {
     if (myAnimeList.length == 0) {
         let emptyPageTemplate = `
         <div class="w-100 d-flex flex-column justify-content-center align-items-center text-center" style="height:50vh">
@@ -51,6 +81,9 @@ function getList() {
         `
         list.insertAdjacentHTML("beforeend", emptyPageTemplate)
     }
+
+
+
     // Anime list counter
     let animeCount = document.querySelector("#animeCount")
     if (myAnimeList.length > 0) {
@@ -58,25 +91,29 @@ function getList() {
     } else {
         animeCount.innerText = 0
     }
+    //for (let anime of myAnimeList) {
+    for (let i = 0; i < myAnimeList.length; i++) {
 
-    for (let anime of myAnimeList) {
+        let anime = myAnimeList[i]
         let status = {};
         if (anime.episodes == anime.watched) {
             status.text = "Completed"
             status.class = "text-orange fw-bold"
-            status.border = "text-orange"
+            status.color = "text-orange"
         } else {
             status.text = "Watched"
             status.class = "text-secondary"
-            status.border = ""
+            status.color = ""
         }
+        let localData = localStorage.getItem("myAnimeList")
+        let oldIndex = JSON.parse(localData).findIndex(list => list.id == anime.id)
+
         // anime card
         let li = `
-                <div class=" list-items " id="${anime.id}">
-                    <div class="rounded-3 d-flex flex-sm-column shadow-sm overflow-hidden
-                    border border-2 ${status.border}">
+                <section class="list-item " id="${anime.id}">
+                    <div class="position-relative rounded-3 d-flex flex-sm-column shadow overflow-hidden" style="background-color:#ffffff11;border:2px solid transparent">
                         <div class="col-4 col-sm-12" style="background-image:url('${anime.image}');background-size: cover; aspect-ratio:2/3">
-                            
+                        
                         </div>
                         <div class="col-8 col-sm-12 d-flex flex-column justify-content-between">
                             <div class="p-2 text-center">
@@ -109,27 +146,91 @@ function getList() {
                                             <div class="p-3 small" data-bs-toggle="dropdown" aria-expanded="false" style="cursor:pointer">
                                             <i class="fa-solid fa-ellipsis-vertical"></i>
                                             </div>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item small" onclick="removeAnime('${anime.id}')" href="#"><i class="fa-solid fa-trash"></i> Remove</a></li>
+                                            <ul class="dropdown-menu shadow">
+                                                <li><a class="dropdown-item small" onclick="openEdit(${anime.id})" href="#"><i class="fa-solid fa-edit me-2"></i> Edit</a></li>
+                                                <li><a class="dropdown-item small" onclick="removeAnime('${anime.id}')" href="#"><i class="fa-solid fa-trash me-2"></i> Remove</a></li>
                                             </ul>
                                         </div>
                                     </div>
                                 </li>
                             </ul>
                         </div>
+                        <form id="editpanel-${anime.id}" class="editpanel" style="display:none">
+                            <div class="form-floating mb-2 w-100">
+                                <textarea minlength="3" type="text" class="form-control" id="inputName-${anime.id}" style="height:5rem" required>${anime.name}</textarea>
+                                <label for="inputName">Anime Name</label>
+                            </div>
+                            <div class="form-floating mb-2  w-100">
+                                <input type="number" class="form-control" min="0" max="${anime.episodes}" id="inputEpisodes-${anime.id}" value="${anime.watched}" required>
+                                <label for="inputEpisodes">Watched Episodes</label>
+                            </div>
+                            <div class="btn-group w-100">
+                                <button class="btn btn-secondary col-4" onclick="cancelEdit(${anime.id})"> Cancel
+                                </button>
+                                <button class="btn btn-info col-8 d-flex justify-content-center align-items-center"
+                                onclick="saveEdit(${anime.id})">
+                                <i class="fa-solid fa-floppy-disk me-2"></i>
+                                <span>Update</span></button>
+                            </div>
+                        </form>
                     </div>
-                </div>`
+                    
+                </section>`
         list.insertAdjacentHTML("beforeend", li)
+        if (i < oldIndex) {
+            listAnimation(oldIndex, i)
+        }
     }
     updateLocalStorage();
 }
+function listAnimation(oldIndex, newIndex) {
+    setTimeout(() => {
+        childIndex = oldIndex + 1
+        changedIndex = newIndex + 1
+        let childElemOld = document.querySelector("#list > section:nth-child(" + childIndex + ")")
+        childElemOld.classList.add("fade-up")
+        let childElemNew = document.querySelector("#list > section:nth-child(" + changedIndex + ")")
+        childElemNew.classList.add("fade-down")
+    }, 0);
+}
+
+
+// Edit / Save 
+function openEdit(id) {
+    const editpanel = document.getElementById("editpanel-" + id)
+    editpanel.style.display = ("flex")
+}
+function saveEdit(id) {
+    const editpanel = document.getElementById("editpanel-" + id)
+    const inputName = document.getElementById("inputName-" + id).value
+    const inputEpisodes = document.getElementById("inputEpisodes-" + id).value
+    let itemIndex = myAnimeList.findIndex(list => list.id == id)
+    if (inputName.length < 3) {
+        return
+    } else {
+        myAnimeList[itemIndex].name = inputName;
+    }
+    if (inputEpisodes > myAnimeList[itemIndex].episodes) {
+        myAnimeList[itemIndex].watched = myAnimeList[itemIndex].episodes;
+    } else {
+        myAnimeList[itemIndex].watched = inputEpisodes;
+    }
+
+    editpanel.style.display = ("none")
+    list.innerHTML = ""
+    getList();
+}
+function cancelEdit(id) {
+    const editpanel = document.getElementById("editpanel-" + id)
+    editpanel.style.display = ("none")
+}
+
 // localStorage controls
 function checkLocalStorage() {
     localData = localStorage.getItem("myAnimeList")
     if (localData) {
         myAnimeList = JSON.parse(localData)
     }
-    getList();
 }
 function updateLocalStorage() {
     localStorage.setItem("myAnimeList", JSON.stringify(myAnimeList))
@@ -145,6 +246,7 @@ function countUp(id) {
     }
     getList()
     sortBy(userSettings.filterType)
+    countBlink(id)
 }
 function countDown(id) {
     list.innerHTML = ""
@@ -154,7 +256,14 @@ function countDown(id) {
     }
     getList()
     sortBy(userSettings.filterType)
+    countBlink(id)
 }
+function countBlink(id) {
+    let itemli = document.getElementById(id).firstElementChild
+    itemli.classList.add("item-blink")
+    setTimeout(() => { itemli.classList.remove("item-blink") }, 200)
+}
+
 
 // Add new Anime
 class NewAnime {
@@ -191,7 +300,6 @@ function pushList(payload) {
     list.innerHTML = ""
     getList()
 }
-
 
 // Remove Anime from list
 function removeAnime(id) {
@@ -233,10 +341,10 @@ function sortBy(sortType) {
 
 
 // Search Anime from kitsu API
-let searchResults = []
-const resultList = document.querySelector("#resultList")
 // Fecth anime data
 async function fetchAnimeData() {
+    const spinner = document.querySelector(".spinner-border")
+    spinner.classList.remove("d-none")
     resultList.innerHTML = ""
     const searchText = document.querySelector("#searchText").value
     const response = await fetch("https://kitsu.io/api/edge/anime?filter[text]=" + searchText);
@@ -265,37 +373,21 @@ async function fetchAnimeData() {
     } else {
         resultList.innerHTML = "OOPS! Nothing found"
     }
+    spinner.classList.add("d-none")
 }
 
-// Dark mode controls
-let checkbox = document.querySelector("input[name=darkModeToggle]")
-let mainHTML = document.querySelector("html")
-let metaTheme = document.querySelector("meta[name=theme-color]")
-checkbox.addEventListener('change', function () {
-    if (this.checked) {
-        mainHTML.setAttribute("data-bs-theme", "dark")
-        metaTheme.setAttribute("content", "#000")
-        userSettings.colorScheme = "dark"
-    } else {
-        mainHTML.setAttribute("data-bs-theme", "light")
-        metaTheme.setAttribute("content", "#fff")
-        userSettings.colorScheme = "light"
-    }
-    saveSettings()
-});
 
 
 
 /* TODO
+    Must/Bug/Fix/Improve
     +   Remove anime frm list
-    -   Search input keypress search
+    +   Search input keypress search
     +   Sort by filters
-    -   Add filter and color settings to localStorage and check before page load
-    -   anime card edit (name, episodes, watched)
-    -   Dont refresh whole list while count up or down
-        (set innerHTML and update localStorage)
+    +   Add filter and color settings to localStorage and check before page load
+    
+    Feature
+    +   Add Anime Count
+    -   anime card edit option (name, episodes, watched)
     -   Add about section
-    -   Internet connection check PWA
-    -   APP ICON
-    -   Add Anime Count
 */

@@ -1,9 +1,9 @@
 {
     "name": "Animemo",
-    "short_name": "animemo",
+    "short_name": "Animemo",
     "start_url": "index.html",
     "display": "standalone",
-    "background_color": "#fdfdfd",
+    "background_color": "#21252a",
     "theme_color": "#db4938",
     "orientation": "portrait-primary",
     "icons": [
