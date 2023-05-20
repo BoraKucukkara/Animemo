@@ -22,7 +22,6 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-
 }
 
 .watched-count {
@@ -37,10 +36,20 @@
     background: #ff5e00 !important
 }
 
-
 .border-orange {
     border: 2px solid #ff5e00 !important;
     border-color: #ff5e00 !important;
+}
+
+.sort-by-item::before {
+    content: "";
+    width: .3rem;
+    height: .3rem;
+    background-color: #ff5e00;
+    position: absolute;
+    border-radius: .3rem;
+    left: .4rem;
+    top: .8rem
 }
 
 /* btn info */

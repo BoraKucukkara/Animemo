@@ -23,11 +23,11 @@
 <body class="container-fluid p-4">
     <div id="app" class="">
         <header class="mb-3 d-flex justify-content-between align-items-center">
-            <div class="">
+            <div class="d-flex align-items-center">
                 <img class="" style="height:3rem;" src="assets/app-icon.png" />
-                <span class="fw-bold fs-4">Animemo</span>
+                <div class="fw-bold fs-4">Animemo</div>
             </div>
-            <div>animes <span class="badge bg-orange">0</span></div>
+            <div>animes <span id="animeCount" class="badge bg-orange">0</span></div>
             <!-- Menu dropdown -->
             <div class="dropdown" style="z-index:99">
                 <button class="btn btn-secondary shadow dropdown-toggle" type="button" data-bs-toggle="dropdown"
@@ -38,9 +38,12 @@
                     <li>
                         <h6 class="dropdown-header">Sort by</h6>
                     </li>
-                    <li><a class="dropdown-item" href="#" onclick="sortBy('name')">Name</a></li>
-                    <li><a class="dropdown-item" href="#" onclick="sortBy('lastwatched')">Last Watched</a></li>
-                    <li><a class="dropdown-item" href="#" onclick="sortBy('mostwatched')">Most Watched</a></li>
+                    <li><a id="sortbyname" class="dropdown-item position-relative" href="#"
+                            onclick="sortBy('name')">Name</a></li>
+                    <li><a id="sortbylast" class="dropdown-item position-relative" href="#"
+                            onclick="sortBy('lastwatched')">Last Watched</a></li>
+                    <li><a id="sortbymost" class="dropdown-item position-relative" href="#"
+                            onclick="sortBy('mostwatched')">Most Watched</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>

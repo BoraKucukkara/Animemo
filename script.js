@@ -8,55 +8,39 @@ if ("serviceWorker" in navigator) {
     })
 } */
 // wait for the DOM
-document.addEventListener("DOMContentLoaded", checkLocalStorage)
+// document.addEventListener("DOMContentLoaded", checkLocalStorage)
+
 // current list, syncs with localStorage
-let myAnimeList = [
-    /*{
-        "name": "Naruto",
-        "episodes": 12,
-        "watched": 3,
-        "image": "https://m.media-amazon.com/images/M/MV5BMDI3ZDY4MDgtN2U2OS00Y2YzLWJmZmYtZWMzOTM3YWFjYmUyXkEyXkFqcGdeQXVyNjAwNDUxODI@._V1_.jpg",
-        "lastWatched": "",
-        "id": "2049833453"
-    },
-    {
-        "name": "Shingeki no Kiyojin",
-        "episodes": 34,
-        "watched": 3,
-        "image": "https://m.media-amazon.com/images/M/MV5BMGY3Mzg3M2UtNzYxNi00ZDYzLTlhMTQtMjkzZTA2MWQ4NjA0XkEyXkFqcGdeQXVyNjAwNDUxODI@._V1_FMjpg_UX1000_.jpg",
-        "lastWatched": "",
-        "id": "54564564"
-    },
-    {
-        "name": "Jujutsu Kaisen",
-        "episodes": 46,
-        "watched": 3,
-        "image": "https://m.media-amazon.com/images/M/MV5BMTMwMDM4N2EtOTJiYy00OTQ0LThlZDYtYWUwOWFlY2IxZGVjXkEyXkFqcGdeQXVyNjAwNDUxODI@._V1_.jpg",
-        "lastWatched": "",
-        "id": "156345244"
-    },
-    {
-        "name": "Kimetsu no Yaiba",
-        "episodes": 66,
-        "watched": 3,
-        "image": "https://m.media-amazon.com/images/M/MV5BNmFhY2I1ZjMtMzBkNy00MjZiLWI3Y2ItMDhhYmJmMzc4MGZiXkEyXkFqcGdeQXVyMTEzMTI1Mjk3._V1_FMjpg_UX1000_.jpg",
-        "lastWatched": "",
-        "id": "098342093"
-    }*/
-]
-let userSettings = [{
-    colorScheme: "dark",
-    filterType: ""
-}]
-// set 
+let myAnimeList = []
+
+// set main list
 const list = document.getElementById("list")
 // checks if any local data and syncs with array
-// checkLocalStorage();
+checkLocalStorage();
 
-async function getList() {
+// USER SETTINGS
+let userSettings = {
+    colorScheme: "dark",
+    filterType: "name"
+}
+checkSettings();
+function saveSettings() {
+    localStorage.setItem("userSettings", JSON.stringify(userSettings))
+}
+function checkSettings() {
+    if (localStorage.getItem("userSettings")) {
+        userSettings = JSON.parse(localStorage.getItem("userSettings"))
+        sortBy(userSettings.filterType)
+        console.log("settings parsed")
+    } else {
+        console.log(" no settings")
+    }
+}
+
+function getList() {
     if (myAnimeList.length == 0) {
         let emptyPageTemplate = `
-        <div class="w-100 vh-100 d-flex flex-column justify-content-center align-items-center text-center">
+        <div class="w-100 d-flex flex-column justify-content-center align-items-center text-center" style="height:50vh">
         <div class="display-1 fw-bold">Animemo</div>
         <p>Add here some anime series</p>
         <button class="btn btn-lg btn-info rounded-circle w-auto" data-bs-toggle="modal"
@@ -67,8 +51,14 @@ async function getList() {
         `
         list.insertAdjacentHTML("beforeend", emptyPageTemplate)
     }
-    // delayed loop script
-    //const delay = ms => new Promise(res => setTimeout(res, ms)) // delay
+    // Anime list counter
+    let animeCount = document.querySelector("#animeCount")
+    if (myAnimeList.length > 0) {
+        animeCount.innerText = myAnimeList.length
+    } else {
+        animeCount.innerText = 0
+    }
+
     for (let anime of myAnimeList) {
         let status = {};
         if (anime.episodes == anime.watched) {
@@ -130,7 +120,6 @@ async function getList() {
                     </div>
                 </div>`
         list.insertAdjacentHTML("beforeend", li)
-        //await delay(100)
     }
     updateLocalStorage();
 }
@@ -155,6 +144,7 @@ function countUp(id) {
         myAnimeList[itemIndex].lastWatched = new Date().toLocaleString()
     }
     getList()
+    sortBy(userSettings.filterType)
 }
 function countDown(id) {
     list.innerHTML = ""
@@ -163,6 +153,7 @@ function countDown(id) {
         myAnimeList[itemIndex].watched--
     }
     getList()
+    sortBy(userSettings.filterType)
 }
 
 // Add new Anime
@@ -196,6 +187,7 @@ function pushList(payload) {
         "id": payload.id
     }
     myAnimeList.unshift(animeListItem)
+    sortBy(userSettings.filterType)
     list.innerHTML = ""
     getList()
 }
@@ -209,20 +201,34 @@ function removeAnime(id) {
     getList()
 }
 
-// Sort List Function
+// Sort List Function and class control
 function sortBy(sortType) {
+    userSettings.filterType = sortType
     let sortedList;
+    // remove all classes
+    let hasSortClass = document.querySelector(".sort-by-item")
+    if (hasSortClass) {
+        hasSortClass.classList.remove("sort-by-item")
+    }
+    // set menu items
+    let sortbyname = document.querySelector("#sortbyname")
+    let sortbylast = document.querySelector("#sortbylast")
+    let sortbymost = document.querySelector("#sortbymost")
+
     if (sortType == "name") {
         sortedList = myAnimeList.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
+        sortbyname.classList.add("sort-by-item")
     } else if (sortType == "mostwatched") {
         sortedList = myAnimeList.sort((a, b) => b.watched - a.watched);
+        sortbymost.classList.add("sort-by-item")
     } else if (sortType == "lastwatched") {
         sortedList = myAnimeList.sort((a, b) => (a.lastWatched > b.lastWatched) ? -1 : ((b.lastWatched > a.lastWatched) ? 1 : 0))
+        sortbylast.classList.add("sort-by-item")
     }
     list.innerHTML = ""
     myAnimeList = sortedList
     getList()
-
+    saveSettings()
 }
 
 
@@ -269,11 +275,15 @@ checkbox.addEventListener('change', function () {
     if (this.checked) {
         mainHTML.setAttribute("data-bs-theme", "dark")
         metaTheme.setAttribute("content", "#000")
+        userSettings.colorScheme = "dark"
     } else {
         mainHTML.setAttribute("data-bs-theme", "light")
         metaTheme.setAttribute("content", "#fff")
+        userSettings.colorScheme = "light"
     }
+    saveSettings()
 });
+
 
 
 /* TODO
@@ -281,11 +291,11 @@ checkbox.addEventListener('change', function () {
     -   Search input keypress search
     +   Sort by filters
     -   Add filter and color settings to localStorage and check before page load
+    -   anime card edit (name, episodes, watched)
     -   Dont refresh whole list while count up or down
         (set innerHTML and update localStorage)
     -   Add about section
     -   Internet connection check PWA
     -   APP ICON
-    -   
-
+    -   Add Anime Count
 */
