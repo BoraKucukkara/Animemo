@@ -1,10 +1,10 @@
 const staticDevCoffee = "Animemo-v1"
 const assets = [
-    "/",
-    "/index.html",
-    "/style.css",
-    "/script.js",
-    "/assets/app-icon.png",
+    // "/",
+    // "/index.html",
+    // "/style.css",
+    // "/script.js",
+    // "/assets/app-icon.png",
 ]
 
 self.addEventListener("install", installEvent => {

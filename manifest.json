@@ -2,9 +2,9 @@
     "name": "Animemo",
     "short_name": "Animemo",
     "start_url": "index.html",
-    "display": "standalone",
+    "display": "fullscreen",
     "background_color": "#21252a",
-    "theme_color": "#db4938",
+    "theme_color": "#21252a",
     "orientation": "portrait-primary",
     "icons": [
         {
