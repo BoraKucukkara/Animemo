@@ -1,4 +1,4 @@
-/*  PWA Service worker register 
+/*  PWA Service worker register */
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", function () {
         navigator.serviceWorker
@@ -6,7 +6,7 @@ if ("serviceWorker" in navigator) {
             .then(res => console.log("service worker registered"))
             .catch(err => console.log("service worker not registered", err))
     })
-} */
+}
 // wait for the DOM
 // document.addEventListener("DOMContentLoaded", checkLocalStorage)
 
