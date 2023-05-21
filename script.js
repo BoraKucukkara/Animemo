@@ -7,23 +7,6 @@ if ("serviceWorker" in navigator) {
             .catch(err => console.log("service worker not registered", err))
     })
 }
-Notification.requestPermission().then((result) => {
-    if (result === "granted") {
-        animemoNotification();
-    }
-});
-
-function animemoNotification() {
-    const notifTitle = "hey Welcome to Animemo";
-    const notifBody = "Feel free to contact me @borakucukkara";
-    const notifImg = "assets/app-icon.png";
-    const options = {
-        body: notifBody,
-        icon: notifImg,
-    };
-    new Notification(notifTitle, options);
-    setTimeout(animemoNotification, 5000);
-}
 // wait for the DOM
 // document.addEventListener("DOMContentLoaded", checkLocalStorage)
 
@@ -399,12 +382,13 @@ async function fetchAnimeData() {
 /* TODO
     Must/Bug/Fix/Improve
     +   Remove anime frm list
-    +   Search input keypress search
+    -   Search input keypress search
     +   Sort by filters
     +   Add filter and color settings to localStorage and check before page load
     
     Feature
     +   Add Anime Count
-    -   anime card edit option (name, episodes, watched)
+    +   anime card edit option (name, episodes, watched)
     -   Add about section
+    + PWA app with service worker
 */
