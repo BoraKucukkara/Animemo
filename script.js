@@ -22,6 +22,7 @@ const checkbox = document.querySelector("input[name=darkModeToggle]")
 const mainHTML = document.querySelector("html")
 const metaTheme = document.querySelector("meta[name=theme-color]")
 
+
 // checks if any local data and syncs with array
 checkLocalStorage();
 
@@ -68,19 +69,15 @@ checkbox.addEventListener('change', function () {
 async function getList() {
     if (myAnimeList.length == 0) {
         let emptyPageTemplate = `
-        <div class="w-100 d-flex flex-column justify-content-center align-items-center text-center" style="height:50vh">
-        <div class="display-1 fw-bold">Animemo</div>
-        <p>Add here some anime series</p>
-        <button class="btn btn-lg btn-info rounded-circle w-auto p-0" data-bs-toggle="modal"
-                data-bs-target="#addAnimeModal" style="width:4rem !important; height: 4rem!important">
-                <i class="fa-solid fa-plus"></i>
-        </button>
+        <div class="w-100 d-flex flex-column justify-content-center align-items-center text-center" style="height:80vh">
+        
+            <div class="display-3 fw-bold text-body-secondary">Animemo</div>
+            <p class="lead text-orange">Add here some anime series</p>
+            <div class="display-5 text-body-secondary">*-*</div>
         </div>
         `
         list.insertAdjacentHTML("beforeend", emptyPageTemplate)
     }
-
-
 
     // Anime list counter
     let animeCount = document.querySelector("#animeCount")
@@ -371,22 +368,23 @@ async function fetchAnimeData() {
             resultList.insertAdjacentHTML("beforeend", li)
         }
     } else {
-        resultList.innerHTML = "OOPS! Nothing found"
+        resultList.innerHTML = "OOPS! Nothing found >_<"
     }
     spinner.classList.add("d-none")
 }
 
 // Add btn opacity on scroll
+const addbutton = document.getElementById("addbuttonatbottom")
 window.onscroll = () => {
-    const addbutton = document.getElementById("addbuttonatbottom")
     if (document.body.scrollTop > 0 || document.documentElement.scrollTop > 0) {
         addbutton.classList.remove("opacity-100")
         addbutton.classList.add("opacity-50")
         setTimeout(() => {
             addbutton.classList.add("opacity-100")
         }, 1000)
-    } else {
+    }
+    else {
         addbutton.classList.remove("opacity-50")
-        clearTimeout()
     }
 }
+
