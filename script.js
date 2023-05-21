@@ -7,8 +7,6 @@ if ("serviceWorker" in navigator) {
             .catch(err => console.log("service worker not registered", err))
     })
 }
-// wait for the DOM
-// document.addEventListener("DOMContentLoaded", checkLocalStorage)
 
 // current list, syncs with localStorage
 let myAnimeList = []
@@ -73,8 +71,8 @@ async function getList() {
         <div class="w-100 d-flex flex-column justify-content-center align-items-center text-center" style="height:50vh">
         <div class="display-1 fw-bold">Animemo</div>
         <p>Add here some anime series</p>
-        <button class="btn btn-lg btn-info rounded-circle w-auto" data-bs-toggle="modal"
-                data-bs-target="#addAnimeModal">
+        <button class="btn btn-lg btn-info rounded-circle w-auto p-0" data-bs-toggle="modal"
+                data-bs-target="#addAnimeModal" style="width:4rem !important; height: 4rem!important">
                 <i class="fa-solid fa-plus"></i>
         </button>
         </div>
@@ -141,20 +139,22 @@ async function getList() {
                                         <div><i class="fa-regular fa-calendar-check"></i> Last Watched</div>
                                         <div>${anime.lastWatched}</div>
                                     </div>
+                                    <!-- Anime card menu btn -->
                                     <div class="position-absolute end-0 bottom-0">
                                         <div class="btn-group">
                                             <div class="p-3 small" data-bs-toggle="dropdown" aria-expanded="false" style="cursor:pointer">
                                             <i class="fa-solid fa-ellipsis-vertical"></i>
                                             </div>
                                             <ul class="dropdown-menu shadow">
-                                                <li><a class="dropdown-item small" onclick="openEdit(${anime.id})" href="#"><i class="fa-solid fa-edit me-2"></i> Edit</a></li>
-                                                <li><a class="dropdown-item small" onclick="removeAnime('${anime.id}')" href="#"><i class="fa-solid fa-trash me-2"></i> Remove</a></li>
+                                                <li><button type="button" class="dropdown-item small" onclick="openEdit(${anime.id})" href="#"><i class="fa-solid fa-edit me-2"></i> Edit</button></li>
+                                                <li><button type="button" class="dropdown-item small" onclick="removeAnime('${anime.id}')" href="#"><i class="fa-solid fa-trash me-2"></i> Remove</button></li>
                                             </ul>
                                         </div>
                                     </div>
                                 </li>
                             </ul>
                         </div>
+                        <!-- Edid Panel -->
                         <form id="editpanel-${anime.id}" class="editpanel" style="display:none">
                             <div class="form-floating mb-2 w-100">
                                 <textarea minlength="3" type="text" class="form-control" id="inputName-${anime.id}" style="height:5rem" required>${anime.name}</textarea>
@@ -165,9 +165,9 @@ async function getList() {
                                 <label for="inputEpisodes">Watched Episodes</label>
                             </div>
                             <div class="btn-group w-100">
-                                <button class="btn btn-secondary btn-sm col-4 small" onclick="cancelEdit(${anime.id})"> Cancel
+                                <button type="button" class="btn btn-secondary btn-sm col-4 small" onclick="cancelEdit(${anime.id})"> Cancel
                                 </button>
-                                <button class="btn btn-info btn-sm col-8 d-flex justify-content-center align-items-center"
+                                <button type="button" class="btn btn-info btn-sm col-8 d-flex justify-content-center align-items-center"
                                 onclick="saveEdit(${anime.id})">
                                 <i class="fa-solid fa-floppy-disk me-2"></i>
                                 <span>Update</span></button>
@@ -376,19 +376,17 @@ async function fetchAnimeData() {
     spinner.classList.add("d-none")
 }
 
-
-
-
-/* TODO
-    Must/Bug/Fix/Improve
-    +   Remove anime frm list
-    -   Search input keypress search
-    +   Sort by filters
-    +   Add filter and color settings to localStorage and check before page load
-    
-    Feature
-    +   Add Anime Count
-    +   anime card edit option (name, episodes, watched)
-    -   Add about section
-    + PWA app with service worker
-*/
+// Add btn opacity on scroll
+window.onscroll = () => {
+    const addbutton = document.getElementById("addbuttonatbottom")
+    if (document.body.scrollTop > 0 || document.documentElement.scrollTop > 0) {
+        addbutton.classList.remove("opacity-100")
+        addbutton.classList.add("opacity-50")
+        setTimeout(() => {
+            addbutton.classList.add("opacity-100")
+        }, 1000)
+    } else {
+        addbutton.classList.remove("opacity-50")
+        clearTimeout()
+    }
+}

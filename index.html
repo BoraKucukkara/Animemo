@@ -21,20 +21,30 @@
 </head>
 
 <body class="container-fluid p-4 overflow-x-hidden overflow-y-scroll">
-    <div id="app" class="">
+    <div id="app" class="position-relative">
         <header class="mb-3 d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
                 <img class="" style="height:3rem;" src="assets/app-icon.png" />
                 <div class="fw-bold fs-4">Animemo</div>
             </div>
             <div>Animes <span id="animeCount" class="badge bg-orange">0</span></div>
+
             <!-- Menu dropdown -->
-            <div class="dropdown" style="z-index:99">
-                <button class="btn btn-secondary shadow dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            <nav class="dropdown" style="z-index:99">
+                <button class="btn btn-secondary  shadow dropdown-toggle" type="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <ul class="dropdown-menu pt-0 shadow ">
+                    <li class="px-2 pt-2">
+                        <button class="btn btn-info w-100" data-bs-toggle="modal" data-bs-target="#addAnimeModal">
+                            <i class="fa-solid fa-plus"></i> Add Anime
+                        </button>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+
                     <li>
                         <h6 class="dropdown-header">Sort by</h6>
                     </li>
@@ -57,13 +67,14 @@
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li class="px-2">
-                        <button class="btn btn-info w-100" data-bs-toggle="modal" data-bs-target="#addAnimeModal">
-                            <i class="fa-solid fa-plus"></i> Add Anime
-                        </button>
+                    <li>
+                        <a id="sortbyname" class="dropdown-item position-relative" data-bs-toggle="modal"
+                            data-bs-target="#aboutAnimemo" href="#" onclick="">About
+                            <strong>Animemo</strong></a>
                     </li>
+
                 </ul>
-            </div>
+            </nav>
         </header>
 
         <!--Anime List Section-->
@@ -71,8 +82,15 @@
             class="row g-4 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 row-cols-xxl-6 mb-4">
 
         </div>
+        <!-- fixed bottom Anime ADD button-->
+        <div id="addbuttonatbottom" class="position-fixed opacity-100 start-50 justify-content-center bottom-0 w-auto">
+            <button class="btn btn-info rounded-circle mb-3" data-bs-toggle="modal" data-bs-target="#addAnimeModal"
+                style="width:3rem !important; height: 3rem!important;transform: translateX(-1.5rem);">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+        </div>
 
-        <!-- Modal -->
+        <!-- Search Modal -->
         <div class="modal fade" id="addAnimeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-fullscreen-sm-down">
                 <div class="modal-content">
@@ -85,21 +103,113 @@
                                     list</span>
                             </div>
                         </div>
-
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
 
                         <div class="col d-flex">
-                            <input type="text"
+                            <input onsearch="fetchAnimeData()" type="search"
                                 class="form-control me-2 bg-secondary-subtle border border-2 border-secondary-subtle"
                                 id="searchText" list="animemoList" placeholder="Anime name">
                             <datalist id="animemoList">
-                                <option value="Naruto">
-                                <option value="Shingeki no Kiyojin">
+                                <option value="Fullmetal Alchemist Brotherhood">
+                                <option value="Boku No Hero Academia">
+                                <option value="Kimi No Na Wa.">
+                                <option value="Death Note">
                                 <option value="Attack on Titan">
-                                <option value="Jujutsu Kaisen">
+                                <option value="Steins Gate">
+                                <option value="One Piece">
+                                <option value="Your Lie in April">
+                                <option value="Code Geass">
+                                <option value="One Punch-Man">
+                                <option value="Koe No Katachi">
+                                <option value="No Game No Life">
+                                <option value="Fairy Tail">
+                                <option value="Naruto">
+                                <option value="Tokyo Ghoul">
+                                <option value="Cowboy Bebop">
+                                <option value="Hunterxhunter">
+                                <option value="Assassination Classroom">
+                                <option value="Gintama">
+                                <option value="Haikyuu">
+                                <option value="Gurren Lagann">
+                                <option value="Jojo's Bizarre Adventure">
+                                <option value="Spirited Away">
+                                <option value="Re:Zero">
+                                <option value="Yuri on Ice">
+                                <option value="Neon Genesis Evangelion">
+                                <option value="Madoka Magica">
+                                <option value="Hunterxhunter 2011">
+                                <option value="Sword Art Online">
+                                <option value="Angel Beats">
+                                <option value="Black Butler">
+                                <option value="Konosuba">
+                                <option value="Clannad After Story">
+                                <option value="Noragami">
+                                <option value="Dragon Ball Z">
+                                <option value="Mob Psycho 100">
+                                <option value="Toradora">
+                                <option value="Soul Eater">
+                                <option value="Fate/Zero">
+                                <option value="Ouran Highschool Host Club">
+                                <option value="Fullmetal Alchemist">
                                 <option value="Bleach">
+                                <option value="Kill La Kill">
+                                <option value="Clannad">
+                                <option value="Death Parade">
+                                <option value="Durarara">
+                                <option value="Monogatari Series: Second Season">
+                                <option value="Psycho-Pass">
+                                <option value="Mirai Nikki">
+                                <option value="Erased">
+                                <option value="Bakemonogatari">
+                                <option value="Princess Mononoke">
+                                <option value="Food Wars: Shokugeki No Soma">
+                                <option value="High School Dxd">
+                                <option value="Howl's Moving Castle">
+                                <option value="Wolf Children">
+                                <option value="Inuyasha">
+                                <option value="Anohana">
+                                <option value="Love Live School Idol Project">
+                                <option value="Blue Exorcist">
+                                <option value="Nichijou">
+                                <option value="Sailor Moon">
+                                <option value="Code Geass: Lelouch of the Rebellion">
+                                <option value="Miss Kobayashi's Dragon Maid">
+                                <option value="Bungou Stray Dogs">
+                                <option value="Baccano">
+                                <option value="The Seven Deadly Sins">
+                                <option value="Shinsekai Yori">
+                                <option value="Monster">
+                                <option value="Samurai Champloo">
+                                <option value="Fooly Cooly">
+                                <option value="Spice and Wolf">
+                                <option value="Another">
+                                <option value="Dragon Ball">
+                                <option value="Mushishi">
+                                <option value="Akira">
+                                <option value="Pokemon">
+                                <option value="Natsume Yuujinchou">
+                                <option value="Terror in Resonance">
+                                <option value="Kuroko No Basket">
+                                <option value="Ghost in the Shell">
+                                <option value="Hyouka">
+                                <option value="Higurashi When They Cry">
+                                <option value="Akame Ga Kill">
+                                <option value="Seraph of the End">
+                                <option value="Charlotte">
+                                <option value="Yona of the Dawn">
+                                <option value="Yu Yu Hakusho">
+                                <option value="Katekyo Hitman Reborn">
+                                <option value="The Pet Girl of Sakurasou">
+                                <option value="Hellsing">
+                                <option value="Magi">
+                                <option value="Berserk">
+                                <option value="Cardcaptor Sakura">
+                                <option value="Log Horizon">
+                                <option value="Elfen Lied">
+                                <option value="Lucky Star">
+                                <option value="Free! - Iwatobi Swim Club">
                             </datalist>
                             <button class="btn btn-info w-auto d-flex align-items-center" type="button"
                                 onclick="fetchAnimeData()">
@@ -113,6 +223,56 @@
                         </ul>
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Done</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Modal -->
+        <div class="modal fade" id="aboutAnimemo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="modal-title d-flex align-items-center" id="exampleModalLabel">
+                            <img class="" style="height: 3rem;" src="assets/app-icon.png" />
+                            <div>
+                                <div class="fs-6 text-secondary-emphasis mt-1">Animemo</div>
+
+                            </div>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong class="text-orange">Animemo</strong> aims to make it easier to follow the anime you
+                            watch. You can easily add the anime to your list and note which episode you watched last.
+                        </p>
+
+                        <p>Animemo is an open source project. Developed by
+                            <a class="btn-link text-orange" href="https://www.borakucukkara.com" target="_blank">Bora
+                                Kucukkara.</a>
+                        </p>
+                        <p>Feel free to <a href="mailto:borakucukkaracom@hotmail.com"
+                                class="btn-link text-orange">contact me.</a></p>
+                        <p>
+                            You can install and use it as an App on your mobile device via Chrome/Safari browsers on
+                            IOS/Android or MacOS/Windows/Linux devices.
+                        </p>
+                        <p class="small text-secondary">
+                            Animemo does not keep and host your personal data. All application data is kept by the user
+                            device. Resetting your device or resetting your internet browser may result in the loss of
+                            your data. All anime titles, episodes and visual data are taken from the Kitsu API service.
+                            Animemo is not responsible for incorrect data.
+                        </p>
+
+                        <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+                            data-name="bmc-button" data-slug="borakucukkara" data-color="#FFDD00" data-emoji=""
+                            data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000"
+                            data-font-color="#000000" data-coffee-color="#ffffff"></script>
+
+                    </div>
+                    <div class="modal-footer">
+
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Done</button>
                     </div>
                 </div>
