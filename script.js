@@ -3,7 +3,7 @@ if ("serviceWorker" in navigator) {
     window.addEventListener("load", function () {
         navigator.serviceWorker
             .register("/serviceWorker.js")
-            .then(res => console.log("service worker registered", res))
+            .then(res => console.log("Animemo service worker registered"))
             .catch(err => console.log("service worker not registered", err))
     })
 }
@@ -165,9 +165,9 @@ async function getList() {
                                 <label for="inputEpisodes">Watched Episodes</label>
                             </div>
                             <div class="btn-group w-100">
-                                <button class="btn btn-secondary col-4" onclick="cancelEdit(${anime.id})"> Cancel
+                                <button class="btn btn-secondary btn-sm col-4 small" onclick="cancelEdit(${anime.id})"> Cancel
                                 </button>
-                                <button class="btn btn-info col-8 d-flex justify-content-center align-items-center"
+                                <button class="btn btn-info btn-sm col-8 d-flex justify-content-center align-items-center"
                                 onclick="saveEdit(${anime.id})">
                                 <i class="fa-solid fa-floppy-disk me-2"></i>
                                 <span>Update</span></button>

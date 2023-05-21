@@ -6,6 +6,7 @@
     "background_color": "#21252a",
     "theme_color": "#21252a",
     "orientation": "portrait-primary",
+    "description": "Your anime tracker",
     "icons": [
         {
             "src": "/assets/app-icon.png",
@@ -46,6 +47,29 @@
             "src": "/assets/app-icon.png",
             "type": "image/png",
             "sizes": "512x512"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "assets/ss01.png",
+            "sizes": "1170x2532",
+            "type": "image/png",
+            "platform": "narrow",
+            "label": "Homescreen of Animemo"
+        },
+        {
+            "src": "assets/ss02.png",
+            "sizes": "1170x2532",
+            "type": "image/png",
+            "platform": "narrow",
+            "label": "Dark mode and menu of Animemo"
+        },
+        {
+            "src": "assets/ss03.png",
+            "sizes": "1170x2532",
+            "type": "image/png",
+            "platform": "narrow",
+            "label": "Search and Add anime screens of Animemo"
         }
     ]
 }
