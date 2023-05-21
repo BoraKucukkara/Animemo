@@ -93,7 +93,14 @@
                         <div class="col d-flex">
                             <input type="text"
                                 class="form-control me-2 bg-secondary-subtle border border-2 border-secondary-subtle"
-                                id="searchText" placeholder="Anime name">
+                                id="searchText" list="animemoList" placeholder="Anime name">
+                            <datalist id="animemoList">
+                                <option value="Naruto">
+                                <option value="Shingeki no Kiyojin">
+                                <option value="Attack on Titan">
+                                <option value="Jujutsu Kaisen">
+                                <option value="Bleach">
+                            </datalist>
                             <button class="btn btn-info w-auto d-flex align-items-center" type="button"
                                 onclick="fetchAnimeData()">
                                 <span class="spinner-border d-none spinner-border-sm me-2" role="status"
@@ -106,7 +113,7 @@
                         </ul>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Done</button>
                     </div>
                 </div>
             </div>
