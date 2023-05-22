@@ -6,18 +6,19 @@
     <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
+    <!-- PWA manifest -->
     <link rel="manifest" href="manifest.json" />
     <!-- ios support -->
-    <link rel="apple-touch-icon" href="assets/app-icon.png" />
-    <link rel="icon" type="image/png" href="assets/app-icon.png" />
+    <link rel="apple-touch-icon" href="assets/animemo-icon.png" />
+    <link rel="icon" type="image/png" href="assets/animemo-icon.png" />
+    <link rel="shortcut icon" type="image/jpg" href="assets/animemo-icon.png" />
     <meta name="apple-mobile-web-app-status-bar" content="#21252a" />
     <meta name="theme-color" content="#21252a" />
 
     <meta name="description" content="Animemo - your anime tracker">
     <meta property="og:title" content="Animemo">
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="assets/ss02.png">
+    <meta property="og:image" content="assets/animemo-app-screenshot.png">
     <meta property="og:url" content="https://animemo.netlify.com">
     <meta name="twitter:card" content="summary_large_image">
     <meta property="og:description" content="Animemo - your anime tracker">
@@ -34,7 +35,7 @@
     <div id="app" class="position-relative">
         <header class="mb-3 d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
-                <img class="" style="height:3rem;" src="assets/app-icon.png" />
+                <img class="" style="height:3rem;" src="assets/animemo-icon.png" alt="Animemo logo" />
                 <div class="fw-bold fs-4">Animemo</div>
             </div>
             <div>Animes <span id="animeCount" class="badge bg-orange">0</span></div>
@@ -106,7 +107,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="modal-title d-flex" id="exampleModalLabel">
-                            <img class="" style="height: 3rem;" src="assets/app-icon.png" />
+                            <img class="" style="height: 3rem;" src="assets/animemo-icon.png" alt="Animemo logo" />
                             <div>
                                 <div class="fs-6 text-secondary-emphasis mt-1">Add new anime to Animemo</div>
                                 <span class="small text-secondary-emphasis">Search anime database and add to your
@@ -127,6 +128,7 @@
                                 <option value="Kimi No Na Wa.">
                                 <option value="Death Note">
                                 <option value="Attack on Titan">
+                                <option value="Shingeki no Kiyojin"></option>
                                 <option value="Steins Gate">
                                 <option value="One Piece">
                                 <option value="Your Lie in April">
@@ -232,7 +234,17 @@
                             <!--Search results-->
                         </ul>
                     </div>
-                    <div class="modal-footer">
+                    <div class="modal-footer d-flex justify-content-between">
+                        <div class="d-flex">
+                            <button class="btn btn-info btn-sm w-auto d-flex align-items-center me-1" type="button"
+                                onclick="fetchAnimeData('mostPopular')">
+                                <span>Popular Animes</span>
+                            </button>
+                            <button class="btn btn-info btn-sm w-auto d-flex align-items-center" type="button"
+                                onclick="fetchAnimeData('mostRating')">
+                                <span>Rating Leaders</span>
+                            </button>
+                        </div>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Done</button>
                     </div>
                 </div>
@@ -245,7 +257,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="modal-title d-flex align-items-center" id="exampleModalLabel">
-                            <img class="" style="height: 3rem;" src="assets/app-icon.png" />
+                            <img class="" style="height: 3rem;" src="assets/animemo-icon.png" alt="Animemo logo" />
                             <div>
                                 <div class="fs-6 text-secondary-emphasis mt-1">Animemo</div>
 
@@ -291,7 +303,7 @@
                     </div>
                     <div class="modal-footer">
 
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Done</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>

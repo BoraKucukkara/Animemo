@@ -1,6 +1,5 @@
 const staticDevCoffee = "Animemo-v1"
-const assets = [
-]
+const assets = ["assests/animemo-icon.png"]
 
 self.addEventListener("install", installEvent => {
     installEvent.waitUntil(

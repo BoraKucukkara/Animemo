@@ -336,16 +336,24 @@ function sortBy(sortType) {
     saveSettings()
 }
 
-
 // Search Anime from kitsu API
 // Fecth anime data
-async function fetchAnimeData() {
-    const spinner = document.querySelector(".spinner-border")
+async function fetchAnimeData(type) {
+    const spinner = document.querySelector(".spinner-border") // load spinner
     spinner.classList.remove("d-none")
     resultList.innerHTML = ""
     const searchText = document.querySelector("#searchText").value
-    const response = await fetch("https://kitsu.io/api/edge/anime?filter[text]=" + searchText);
+    let response;
+    if (type == "mostPopular") {
+        response = await fetch("https://kitsu.io/api/edge/anime?page%5Blimit%5D=20&page%5Boffset%5D=0&sort=popularityRank,popularityRank");
+    } else if (type == "mostRating") {
+        response = await fetch("https://kitsu.io/api/edge/anime?page%5Blimit%5D=20&page%5Boffset%5D=0&sort=-averageRating,-averageRating");
+    } else {
+        response = await fetch("https://kitsu.io/api/edge/anime?page%5Blimit%5D=20&page%5Boffset%5D=0&filter[text]=" + searchText);
+    }
     const jsonData = await response.json();
+    // https://kitsu.io/api/edge/anime?sort=-averageRating,-averageRating
+    // https://kitsu.io/api/edge/anime?sort=popularityRank,popularityRank
     // set search result to array
     searchResults = jsonData.data
     if (searchResults.length > 0) {
@@ -354,10 +362,15 @@ async function fetchAnimeData() {
             let li = `
             <li class="list-group-item p-0 d-flex position-relative">
                 <img class="col-2" src="${result.attributes.posterImage.small}"/>
-                <div class="p-3 col-10 d-flex flex-column ">
+                <div class="px-3 py-1 py-sm-2 col-10 d-flex flex-column ">
                     <div class="fw-bold">${result.attributes.titles.en_jp}</div>
                     <div class="small">${result.attributes.canonicalTitle}</div>
                     <span class="small">Episodes: ${result.attributes.episodeCount}</span>
+                    <div>
+                    <span class="badge w-auto bg-body-secondary text-secondary-emphasis">Rating: ${result.attributes.averageRating}</span>
+                    <span class="badge w-auto bg-body-secondary text-secondary-emphasis">Popularity: # ${result.attributes.popularityRank}</span>
+                    </div>
+                    
                     <button id="${result.id}" class="rounded-circle position-absolute btn btn-sm btn-info end-0 bottom-0 m-2" style="width:2rem; height:2rem"
                     onclick="addNewAnime('${result.attributes.titles.en_jp}', ${result.attributes.episodeCount}, '${result.attributes.posterImage.medium}', ${result.id})">
                     <i class="fa-solid fa-plus"></i>
