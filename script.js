@@ -206,7 +206,7 @@ function listAnimation(oldIndex, newIndex) {
 function shareMe(title, episode) {
     const shareData = {
         title: "Animemo",
-        text: "I just watched " + title + " Episode: " + episode,
+        text: "I just watched " + title + ", episode: " + episode,
         url: "https://animemo.netlify.app",
     }
     if ('share' in navigator) {
@@ -216,7 +216,7 @@ function shareMe(title, episode) {
             })
             .catch(console.error);
     } else {
-        // https://twitter.com/intent/tweet?text=I%20just%20watched%20${anime.name}%20Episode:%20${anime.watched}%20%23animemo%20https%3A%2F%2Fanimemo.netlify.app
+        window.open('https://twitter.com/intent/tweet?text=I%20just%20watched%20' + title + '%20episode:%20' + episode + '%20%23animemo%20https%3A%2F%2Fanimemo.netlify.app', '_blank');
     }
 }
 // Edit / Save 
