@@ -65,8 +65,9 @@ checkbox.addEventListener('change', function () {
     saveSettings()
 });
 
-
+// Main UI list fuction
 async function getList() {
+    list.innerHTML = ""
     if (myAnimeList.length == 0) {
         let emptyPageTemplate = `
         <div class="w-100 d-flex flex-column justify-content-center align-items-center text-center" style="height:80vh">
@@ -86,7 +87,7 @@ async function getList() {
     } else {
         animeCount.innerText = 0
     }
-    //for (let anime of myAnimeList) {
+
     for (let i = 0; i < myAnimeList.length; i++) {
 
         let anime = myAnimeList[i]
@@ -143,8 +144,18 @@ async function getList() {
                                             <i class="fa-solid fa-ellipsis-vertical"></i>
                                             </div>
                                             <ul class="dropdown-menu shadow">
-                                                <li><button type="button" class="dropdown-item small" onclick="openEdit(${anime.id})" href="#"><i class="fa-solid fa-edit me-2"></i> Edit</button></li>
-                                                <li><button type="button" class="dropdown-item small" onclick="removeAnime('${anime.id}')" href="#"><i class="fa-solid fa-trash me-2"></i> Remove</button></li>
+                                                <li><button type="button" class="dropdown-item" onclick="openEdit(${anime.id})"><i class="fa-solid fa-edit me-2"></i> Edit</button></li>
+                                                <li><button type="button" class="dropdown-item" onclick="removeAnime('${anime.id}')"><i class="fa-solid fa-trash me-2"></i> Remove</button></li>
+                                                <li><hr class="dropdown-divider"></li>
+                                                <!--<li><a type="button" class="dropdown-item small" 
+                                                    href="https://twitter.com/intent/tweet?text=I%20just%20watched%20${anime.name}%20Episode:%20${anime.watched}%20%23animemo%20https%3A%2F%2Fanimemo.netlify.app">
+                                                    <i class="fa-brands fa-twitter me-2"></i>
+                                                    Tweet
+                                                    </a>
+                                                </li>-->
+                                                <li>
+                                                <button type="button" class="dropdown-item small" onclick="shareMe('${anime.name}','${anime.watched}')"><i class="fa-solid fa-share me-2"></i> Share</button>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -185,13 +196,29 @@ function listAnimation(oldIndex, newIndex) {
         childIndex = oldIndex + 1
         changedIndex = newIndex + 1
         let childElemOld = document.querySelector("#list > section:nth-child(" + childIndex + ")")
-        childElemOld.classList.add("fade-up")
+        if (childElemOld) childElemOld.classList.add("fade-up")
         let childElemNew = document.querySelector("#list > section:nth-child(" + changedIndex + ")")
         childElemNew.classList.add("fade-down")
-    }, 0);
+    }, 10);
 }
 
-
+// Share on device
+function shareMe(title, episode) {
+    const shareData = {
+        title: "Animemo",
+        text: "I just watched " + title + " Episode: " + episode,
+        url: "https://animemo.netlify.app",
+    }
+    if ('share' in navigator) {
+        navigator.share(shareData)
+            .then(() => {
+                console.log('Shared');
+            })
+            .catch(console.error);
+    } else {
+        // https://twitter.com/intent/tweet?text=I%20just%20watched%20${anime.name}%20Episode:%20${anime.watched}%20%23animemo%20https%3A%2F%2Fanimemo.netlify.app
+    }
+}
 // Edit / Save 
 function openEdit(id) {
     const editpanel = document.getElementById("editpanel-" + id)
@@ -214,7 +241,7 @@ function saveEdit(id) {
     }
 
     editpanel.style.display = ("none")
-    list.innerHTML = ""
+
     getList();
 }
 function cancelEdit(id) {
@@ -235,7 +262,6 @@ function updateLocalStorage() {
 
 // Watched episodes count functions
 function countUp(id) {
-    list.innerHTML = ""
     let itemIndex = myAnimeList.findIndex(list => list.id == id)
     if (myAnimeList[itemIndex].watched < myAnimeList[itemIndex].episodes) {
         myAnimeList[itemIndex].watched++
@@ -246,7 +272,6 @@ function countUp(id) {
     countBlink(id)
 }
 function countDown(id) {
-    list.innerHTML = ""
     let itemIndex = myAnimeList.findIndex(list => list.id == id)
     if (myAnimeList[itemIndex].watched > 0) {
         myAnimeList[itemIndex].watched--
@@ -294,7 +319,6 @@ function pushList(payload) {
     }
     myAnimeList.unshift(animeListItem)
     sortBy(userSettings.filterType)
-    list.innerHTML = ""
     getList()
 }
 
@@ -302,7 +326,6 @@ function pushList(payload) {
 function removeAnime(id) {
     let itemIndex = myAnimeList.findIndex(list => list.id == id)
     myAnimeList.splice(itemIndex, 1)
-    list.innerHTML = ""
     getList()
 }
 
@@ -330,7 +353,6 @@ function sortBy(sortType) {
         sortedList = myAnimeList.sort((a, b) => (a.lastWatched > b.lastWatched) ? -1 : ((b.lastWatched > a.lastWatched) ? 1 : 0))
         sortbylast.classList.add("sort-by-item")
     }
-    list.innerHTML = ""
     myAnimeList = sortedList
     getList()
     saveSettings()
@@ -352,12 +374,10 @@ async function fetchAnimeData(type) {
         response = await fetch("https://kitsu.io/api/edge/anime?page%5Blimit%5D=20&page%5Boffset%5D=0&filter[text]=" + searchText);
     }
     const jsonData = await response.json();
-    // https://kitsu.io/api/edge/anime?sort=-averageRating,-averageRating
-    // https://kitsu.io/api/edge/anime?sort=popularityRank,popularityRank
     // set search result to array
     searchResults = jsonData.data
     if (searchResults.length > 0) {
-        // loop for results
+        // loop for search results
         for (let result of searchResults) {
             let li = `
             <li class="list-group-item p-0 d-flex position-relative">
@@ -367,8 +387,8 @@ async function fetchAnimeData(type) {
                     <div class="small">${result.attributes.canonicalTitle}</div>
                     <span class="small">Episodes: ${result.attributes.episodeCount}</span>
                     <div>
-                    <span class="badge w-auto bg-body-secondary text-secondary-emphasis">Rating: ${result.attributes.averageRating}</span>
-                    <span class="badge w-auto bg-body-secondary text-secondary-emphasis">Popularity: # ${result.attributes.popularityRank}</span>
+                        <span class="badge w-auto bg-body-secondary text-secondary-emphasis">Rating: ${result.attributes.averageRating}</span>
+                        <span class="badge w-auto bg-body-secondary text-secondary-emphasis">Popularity: # ${result.attributes.popularityRank}</span>
                     </div>
                     
                     <button id="${result.id}" class="rounded-circle position-absolute btn btn-sm btn-info end-0 bottom-0 m-2" style="width:2rem; height:2rem"
@@ -401,3 +421,110 @@ window.onscroll = () => {
     }
 }
 
+// Search helper datalist 
+const datalistOptions = [
+    "Fullmetal Alchemist Brotherhood",
+    "Boku No Hero Academia",
+    "Kimi No Na Wa.",
+    "Death Note",
+    "Attack on Titan",
+    "Shingeki no Kiyojin",
+    "Steins Gate",
+    "One Piece",
+    "Your Lie in April",
+    "Code Geass",
+    "One Punch-Man",
+    "Koe No Katachi",
+    "No Game No Life",
+    "Fairy Tail",
+    "Naruto",
+    "Tokyo Ghoul",
+    "Cowboy Bebop",
+    "Hunterxhunter",
+    "Assassination Classroom",
+    "Gintama",
+    "Haikyuu",
+    "Gurren Lagann",
+    "Jojo's Bizarre Adventure",
+    "Spirited Away",
+    "Re:Zero",
+    "Yuri on Ice",
+    "Neon Genesis Evangelion",
+    "Madoka Magica",
+    "Hunterxhunter 2011",
+    "Sword Art Online",
+    "Angel Beats",
+    "Black Butler",
+    "Konosuba",
+    "Clannad After Story",
+    "Noragami",
+    "Dragon Ball Z",
+    "Mob Psycho 100",
+    "Toradora",
+    "Soul Eater",
+    "Fate/Zero",
+    "Ouran Highschool Host Club",
+    "Fullmetal Alchemist",
+    "Bleach",
+    "Kill La Kill",
+    "Clannad",
+    "Death Parade",
+    "Durarara",
+    "Monogatari Series: Second Season",
+    "Psycho-Pass",
+    "Mirai Nikki",
+    "Erased",
+    "Bakemonogatari",
+    "Princess Mononoke",
+    "Food Wars: Shokugeki No Soma",
+    "High School Dxd",
+    "Howl's Moving Castle",
+    "Wolf Children",
+    "Inuyasha",
+    "Anohana",
+    "Love Live School Idol Project",
+    "Blue Exorcist",
+    "Nichijou",
+    "Sailor Moon",
+    "Code Geass: Lelouch of the Rebel,ion" >
+    "Miss Kobayashi's Dragon Maid",
+    "Bungou Stray Dogs",
+    "Baccano",
+    "The Seven Deadly Sins",
+    "Shinsekai Yori",
+    "Monster",
+    "Samurai Champloo",
+    "Fooly Cooly",
+    "Spice and Wolf",
+    "Another",
+    "Dragon Ball",
+    "Mushishi",
+    "Akira",
+    "Pokemon",
+    "Natsume Yuujinchou",
+    "Terror in Resonance",
+    "Kuroko No Basket",
+    "Ghost in the Shell",
+    "Hyouka",
+    "Higurashi When They Cry",
+    "Akame Ga Kill",
+    "Seraph of the End",
+    "Charlotte",
+    "Yona of the Dawn",
+    "Yu Yu Hakusho",
+    "Katekyo Hitman Reborn",
+    "The Pet Girl of Sakurasou",
+    "Hellsing",
+    "Magi",
+    "Berserk",
+    "Cardcaptor Sakura",
+    "Log Horizon",
+    "Elfen Lied",
+    "Lucky Star",
+    "Free - Iwato"
+]
+const animemoDatalist = document.getElementById("animemoDatalist")
+for (let i = 0; i < datalistOptions.length; i++) {
+    let optionElement = `<option value="${datalistOptions[i]}">`
+    animemoDatalist.insertAdjacentHTML("beforeend", optionElement)
+}

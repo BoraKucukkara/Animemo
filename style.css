@@ -1,5 +1,5 @@
 * {
-    transition: all .3s ease !important;
+    transition: all .1s linear !important;
 }
 
 #list {
