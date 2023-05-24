@@ -147,14 +147,8 @@ async function getList() {
                                                 <li><button type="button" class="dropdown-item" onclick="openEdit(${anime.id})"><i class="fa-solid fa-edit me-2"></i> Edit</button></li>
                                                 <li><button type="button" class="dropdown-item" onclick="removeAnime('${anime.id}')"><i class="fa-solid fa-trash me-2"></i> Remove</button></li>
                                                 <li><hr class="dropdown-divider"></li>
-                                                <!--<li><a type="button" class="dropdown-item small" 
-                                                    href="https://twitter.com/intent/tweet?text=I%20just%20watched%20${anime.name}%20Episode:%20${anime.watched}%20%23animemo%20https%3A%2F%2Fanimemo.netlify.app">
-                                                    <i class="fa-brands fa-twitter me-2"></i>
-                                                    Tweet
-                                                    </a>
-                                                </li>-->
                                                 <li>
-                                                <button type="button" class="dropdown-item small" onclick="shareMe('${anime.name}','${anime.watched}')"><i class="fa-solid fa-share me-2"></i> Share</button>
+                                                <button type="button" class="dropdown-item small" onclick="shareMe('${anime.name}','${anime.watched}','${anime.id}')"><i class="fa-solid fa-share me-2"></i> Share</button>
                                                 </li>
                                             </ul>
                                         </div>
@@ -202,12 +196,30 @@ function listAnimation(oldIndex, newIndex) {
     }, 10);
 }
 
+// Add anime by Url Params
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const animeID = urlParams.get('anime')
+if (animeID) addbyURLparams(animeID);
+
+async function addbyURLparams(animeID) {
+    let response = await fetch("https://kitsu.io/api/edge/anime/" + animeID)
+    let itemID = myAnimeList.find(list => list.id == animeID)
+    if (response.ok && !itemID || itemID.id != animeID) {
+        let jsonData = await response.json();
+        animeData = jsonData.data
+        let payload = new NewAnime(animeData.attributes.titles.en_jp, animeData.attributes.episodeCount, animeData.attributes.posterImage.medium, animeData.id)
+        pushList(payload)
+    }
+}
+
+
 // Share on device
-function shareMe(title, episode) {
+function shareMe(title, episode, id) {
     const shareData = {
         title: "Animemo",
         text: "I just watched " + title + ", episode: " + episode,
-        url: "https://animemo.netlify.app",
+        url: "https://animemo.netlify.app/?anime=" + id,
     }
     if ('share' in navigator) {
         navigator.share(shareData)
@@ -216,7 +228,7 @@ function shareMe(title, episode) {
             })
             .catch(console.error);
     } else {
-        window.open('https://twitter.com/intent/tweet?text=I%20just%20watched%20' + title + '%20episode:%20' + episode + '%20%23animemo%20https%3A%2F%2Fanimemo.netlify.app', '_blank');
+        window.open('https://twitter.com/intent/tweet?text=I%20just%20watched%20' + title + '%20episode:%20' + episode + '%20%23animemo%20https%3A%2F%2Fanimemo.netlify.app/?anime=' + id, '_blank');
     }
 }
 // Edit / Save 
@@ -289,17 +301,17 @@ function countBlink(id) {
 
 // Add new Anime
 class NewAnime {
-    constructor(name, episode, img) {
+    constructor(name, episode, img, id) {
         this.name = name
         this.episode = episode
         this.img = img
         this.date = "-"//new Date().toLocaleString()
         this.watched = 0
-        this.id = Math.floor(Math.random() * 999999999)
+        this.id = id//Math.floor(Math.random() * 999999999)
     }
 }
 function addNewAnime(name, episode, img, id) {
-    let payload = new NewAnime(name, episode, img)
+    let payload = new NewAnime(name, episode, img, id)
     let addBtn = document.getElementById(id)
     addBtn.classList.remove("btn-info")
     addBtn.disabled = true
