@@ -250,10 +250,13 @@ function saveEdit(id) {
         myAnimeList[itemIndex].watched = myAnimeList[itemIndex].episodes;
     } else {
         myAnimeList[itemIndex].watched = inputEpisodes;
+        if(inputEpisodes == 0 || inputEpisodes < myAnimeList[itemIndex].watched )
+        myAnimeList[itemIndex].lastWatched = "-"
+        else {myAnimeList[itemIndex].lastWatched = new Date().toLocaleString()}
     }
 
     editpanel.style.display = ("none")
-
+    sortBy(userSettings.filterType)
     getList();
 }
 function cancelEdit(id) {
@@ -288,6 +291,7 @@ function countDown(id) {
     if (myAnimeList[itemIndex].watched > 0) {
         myAnimeList[itemIndex].watched--
     }
+    if (myAnimeList[itemIndex].watched === 0) myAnimeList[itemIndex].lastWatched = "-"
     getList()
     sortBy(userSettings.filterType)
     countBlink(id)
@@ -307,7 +311,7 @@ class NewAnime {
         this.img = img
         this.date = "-"//new Date().toLocaleString()
         this.watched = 0
-        this.id = id//Math.floor(Math.random() * 999999999)
+        this.id = id
     }
 }
 function addNewAnime(name, episode, img, id) {
