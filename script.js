@@ -65,7 +65,7 @@ checkbox.addEventListener('change', function () {
     saveSettings()
 });
 
-// Main UI list fuction
+// Main UI list function
 async function getList() {
     list.innerHTML = ""
     if (myAnimeList.length == 0) {
@@ -108,33 +108,33 @@ async function getList() {
         let li = `
                 <section class="list-item " id="${anime.id}">
                     <div class="position-relative rounded-3 d-flex flex-sm-column shadow overflow-hidden" style="background-color:#ffffff11;border:2px solid transparent">
-                        <div class="col-4 col-sm-12" style="background-image:url('${anime.image}');background-size: cover; aspect-ratio:2/3">
-                        
+                        <div class="col-4 col-sm-12 position-relative" style="background-image:url('${anime.image}');background-size: cover; aspect-ratio:2/3">
+                            <div class="anime-name-oncover d-none d-sm-block">${anime.name}</div>
                         </div>
                         <div class="col-8 col-sm-12 d-flex flex-column justify-content-between">
-                            <div class="p-2 text-center">
-                                <div class="anime-name fs-5 fw-bold ">${anime.name}</div>
+                            <div class="text-center">
+                                <div class="anime-name d-block py-2 d-sm-none">${anime.name}</div>
                             </div>
                             <ul class="list-group list-group-flush">
                             <li class="list-group-item bg-transparent">
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <div class="${status.class} small"><i class="fa-solid fa-eye"></i> ${status.text}</div>
+                                        <div class="${status.class} small"><i class="fa-solid fa-eye d-none d-sm-inline"></i> ${status.text}</div>
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <button type="button" onclick="countDown(${anime.id})" class="btn btn-sm">-</button>
+                                            <button type="button" onclick="countDown(${anime.id})" class="btn btn-sm border">-</button>
                                             <span class="px-2 fw-bold fs-2 watched-count">${anime.watched}</span>
-                                            <button type="button" onclick="countUp(${anime.id})" class="btn btn-sm">+</button>
+                                            <button type="button" onclick="countUp(${anime.id})" class="btn btn-sm border">+</button>
                                         </div>
                                     </div>
                                 </li>
                                 <li class="list-group-item bg-transparent">
                                     <div class="d-flex justify-content-between text-secondary">
-                                        <div class="small"><i class="fa-solid fa-film"></i> Episodes</div>
+                                        <div class="small"><i class="fa-solid fa-film d-none d-sm-inline"></i> Episodes</div>
                                         <div>${anime.episodes}</div>
                                     </div>
                                 </li>
                                 <li class="list-group-item position-relative bg-transparent">
                                     <div class="d-flex flex-column text-secondary small">
-                                        <div><i class="fa-regular fa-calendar-check"></i> Last Watched</div>
+                                        <div><i class="fa-regular fa-calendar-check d-none d-sm-inline"></i> Last Watched</div>
                                         <div>${anime.lastWatched}</div>
                                     </div>
                                     <!-- Anime card menu btn -->
@@ -160,11 +160,11 @@ async function getList() {
                         <form id="editpanel-${anime.id}" class="editpanel" style="display:none">
                             <div class="form-floating mb-2 w-100">
                                 <textarea minlength="3" type="text" class="form-control" id="inputName-${anime.id}" style="height:5rem" required>${anime.name}</textarea>
-                                <label for="inputName">Anime Name</label>
+                                <label for="inputName-${anime.id}">Anime Name</label>
                             </div>
                             <div class="form-floating mb-2  w-100">
                                 <input type="number" class="form-control" min="0" max="${anime.episodes}" id="inputEpisodes-${anime.id}" value="${anime.watched}" required>
-                                <label for="inputEpisodes">Watched Episodes</label>
+                                <label for="inputEpisodes-${anime.id}">Watched Episodes</label>
                             </div>
                             <div class="btn-group w-100">
                                 <button type="button" class="btn btn-secondary btn-sm col-4 small" onclick="cancelEdit(${anime.id})"> Cancel
@@ -421,22 +421,6 @@ async function fetchAnimeData(type) {
     }
     spinner.classList.add("d-none")
 }
-
-// Add btn opacity on scroll
-const addbutton = document.getElementById("addbuttonatbottom")
-window.onscroll = () => {
-    if (document.body.scrollTop > 0 || document.documentElement.scrollTop > 0) {
-        addbutton.classList.remove("opacity-100")
-        addbutton.classList.add("opacity-50")
-        setTimeout(() => {
-            addbutton.classList.add("opacity-100")
-        }, 1000)
-    }
-    else {
-        addbutton.classList.remove("opacity-50")
-    }
-}
-
 // Search helper datalist 
 const datalistOptions = [
     "Fullmetal Alchemist Brotherhood",

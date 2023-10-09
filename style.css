@@ -1,6 +1,4 @@
-* {
-    transition: all .1s linear !important;
-}
+
 
 #list {
     animation: fade-up .5s ease forwards;
@@ -88,9 +86,19 @@
 }
 
 .anime-name {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
+    font-weight: bold;
+}
+.anime-name-oncover {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    color:#fff;
+    position: absolute;
+    width: 100%;
+    padding: 1rem 1rem;
+    bottom:0;
+    background: linear-gradient(180deg, #00000000 0%, #000000e1);
+    text-shadow: 0px 2px 2px #0000008b;
 }
 
 .watched-count {
