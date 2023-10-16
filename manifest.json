@@ -11,42 +11,50 @@
         {
             "src": "/assets/animemo-icon.png",
             "type": "image/png",
-            "sizes": "72x72"
+            "sizes": "72x72",
+            "purpose": "any maskable"
         },
         {
             "src": "/assets/animemo-icon.png",
             "type": "image/png",
-            "sizes": "96x96"
+            "sizes": "96x96",
+            "purpose": "any maskable"
         },
         {
             "src": "/assets/animemo-icon.png",
             "type": "image/png",
-            "sizes": "128x128"
+            "sizes": "128x128",
+            "purpose": "any maskable"
         },
         {
             "src": "/assets/animemo-icon.png",
             "type": "image/png",
-            "sizes": "144x144"
+            "sizes": "144x144",
+            "purpose": "any maskable"
         },
         {
             "src": "/assets/animemo-icon.png",
             "type": "image/png",
-            "sizes": "152x152"
+            "sizes": "152x152",
+            "purpose": "any maskable"
         },
         {
             "src": "/assets/animemo-icon.png",
             "type": "image/png",
-            "sizes": "192x192"
+            "sizes": "192x192",
+            "purpose": "any maskable"
         },
         {
             "src": "/assets/animemo-icon.png",
             "type": "image/png",
-            "sizes": "384x384"
+            "sizes": "384x384",
+            "purpose": "any maskable"
         },
         {
             "src": "/assets/animemo-icon.png",
             "type": "image/png",
-            "sizes": "512x512"
+            "sizes": "512x512",
+            "purpose": "any maskable"
         }
     ],
     "screenshots": [

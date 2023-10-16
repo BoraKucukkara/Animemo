@@ -20,13 +20,14 @@ const resultList = document.querySelector("#resultList")
 // color scheme constants
 const checkbox = document.querySelector("input[name=darkModeToggle]")
 const mainHTML = document.querySelector("html")
+const body = document.querySelector("body")
 const metaTheme = document.querySelector("meta[name=theme-color]")
 
 
-// checks if any local data and syncs with array
+// checks if any local data than syncs with myAnimeList[]
 checkLocalStorage();
 
-// USER SETTINGS
+// DAFEULT USER SETTINGS
 let userSettings = {
     colorScheme: "dark",
     filterType: "name"
@@ -35,6 +36,7 @@ checkSettings();
 function saveSettings() {
     localStorage.setItem("userSettings", JSON.stringify(userSettings))
 }
+// checks if any local user settings
 function checkSettings() {
     if (localStorage.getItem("userSettings")) {
         userSettings = JSON.parse(localStorage.getItem("userSettings"))
@@ -70,11 +72,12 @@ async function getList() {
     list.innerHTML = ""
     if (myAnimeList.length == 0) {
         let emptyPageTemplate = `
-        <div class="w-100 d-flex flex-column justify-content-center align-items-center text-center" style="height:80vh">
-        
-            <div class="display-3 fw-bold text-body-secondary">Animemo</div>
-            <p class="lead text-orange">Add here some anime series</p>
-            <div class="display-5 text-body-secondary">*-*</div>
+        <div class="blank-page-cover">
+            <div class="display-3 fw-bold text-light-emphasis">Animemo</div>
+            <p class="lead text-light-emphasis fw-bold">Add here some anime series</p>
+            <button class="btn btn-info col-6 col-sm-4 col-md-2" data-bs-toggle="modal" data-bs-target="#addAnimeModal">
+                <i class="fa-solid fa-plus"></i> Add Anime
+            </button>
         </div>
         `
         list.insertAdjacentHTML("beforeend", emptyPageTemplate)
@@ -89,7 +92,6 @@ async function getList() {
     }
 
     for (let i = 0; i < myAnimeList.length; i++) {
-
         let anime = myAnimeList[i]
         let status = {};
         if (anime.episodes == anime.watched) {
@@ -140,7 +142,7 @@ async function getList() {
                                     <!-- Anime card menu btn -->
                                     <div class="position-absolute end-0 bottom-0">
                                         <div class="btn-group">
-                                            <div class="p-3 small" data-bs-toggle="dropdown" aria-expanded="false" style="cursor:pointer">
+                                            <div class="p-3 small" data-bs-toggle="dropdown" aria-expanded="false" style="cursor:pointer" aria-label="Anime settings">
                                             <i class="fa-solid fa-ellipsis-vertical"></i>
                                             </div>
                                             <ul class="dropdown-menu shadow">
@@ -183,8 +185,10 @@ async function getList() {
             listAnimation(oldIndex, i)
         }
     }
+    // Updates localStorage anime list
     updateLocalStorage();
 }
+
 function listAnimation(oldIndex, newIndex) {
     setTimeout(() => {
         childIndex = oldIndex + 1

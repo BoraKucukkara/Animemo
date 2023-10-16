@@ -38,11 +38,11 @@
     <script src="https://kit.fontawesome.com/7ed19c3a98.js" crossorigin="anonymous"></script>
 </head>
 
-<body class="container-fluid p-4 overflow-x-hidden overflow-y-scroll">
+<body class="container-fluid overflow-x-hidden overflow-y-scroll">
     <div id="app" class="position-relative">
-        <header class="mb-3 d-flex justify-content-between align-items-center">
+        <header class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
-                <img class="" style="height:3rem;" src="assets/animemo-icon.png" alt="Animemo logo" />
+                <img class="" style="width:3rem; height: 3rem;" src="assets/animemo-icon.png" alt="Animemo logo" />
                 <div>
                     <div class="fw-bold fs-4 lh-sm">Animemo</div>
                     <span class="d-block p-0 m-0 lh-sm" style="font-size: .7rem;">アニメトラッカー</span>
@@ -53,7 +53,7 @@
             <!-- Menu dropdown -->
             <nav class="dropdown" style="z-index:99">
                 <button class="btn btn-secondary  shadow dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
+                    aria-expanded="false" aria-label="main menu">
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <ul class="dropdown-menu pt-0 shadow ">
@@ -104,7 +104,7 @@
         </div>
         <!-- fixed bottom Anime ADD button-->
         <div id="addbuttonatbottom" class="position-fixed start-50 bottom-0 w-auto">
-            <button class="btn btn-info rounded-circle mb-3" data-bs-toggle="modal" data-bs-target="#addAnimeModal"
+            <button class="btn btn-info rounded-circle mb-3" data-bs-toggle="modal" data-bs-target="#addAnimeModal" aria-label="Add new anime"
                 style="width:3rem !important; height: 3rem!important;transform: translateX(-1.5rem);">
                 <i class="fa-solid fa-plus"></i>
             </button>

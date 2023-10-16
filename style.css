@@ -1,9 +1,10 @@
 
-
 #list {
     animation: fade-up .5s ease forwards;
 }
-
+header {
+    height: 5rem;
+}
 .editpanel {
     overflow: hidden !important;
     position: absolute !important;
@@ -17,7 +18,7 @@
     animation: fade-in .3sec ease forwards;
 }
 
-@keyframes fade-inp {
+@keyframes fade-in {
     from {
         opacity: 0;
     }
@@ -100,7 +101,40 @@
     background: linear-gradient(180deg, #00000000 0%, #000000e1);
     text-shadow: 0px 2px 2px #0000008b;
 }
-
+.blank-page-cover {
+    position: absolute !important;
+    inset:0 !important;
+    width: 100% !important;
+    height: calc(100dvh - 5rem) !important;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: -1;
+}
+.blank-page-cover::after {
+    position: absolute;
+    inset: -10rem;
+    content:"";
+    z-index:-2;
+    width: 200% !important;
+    height: calc(200dvh);
+    background-image: url("assets/animemo.netlify.app_.jpg");
+    background-repeat: repeat;
+    background-size: 70rem;
+    opacity:.5;
+    transform: rotate(10deg);
+    animation: bg-scroll 400s linear infinite;
+    border: 1px solid green;
+}
+@media screen and (width < 576px) {
+    .blank-page-cover::after { background-size: 30rem;}
+}
+@keyframes bg-scroll {
+    from {background-position: 0 1000vh}
+    to {background-position: 0 0}
+}
 .watched-count {
     color: #ff5e00;
 }
