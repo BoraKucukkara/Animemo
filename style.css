@@ -120,7 +120,7 @@ header {
     z-index:-2;
     width: 200% !important;
     height: calc(200dvh);
-    background-image: url("assets/animemo.netlify.app_.jpg");
+    background-image: url("assets/animemo.netlify.app_.webp");
     background-repeat: repeat;
     background-size: 70rem;
     opacity:.5;
