@@ -22,6 +22,7 @@ const checkbox = document.querySelector("input[name=darkModeToggle]")
 const mainHTML = document.querySelector("html")
 const body = document.querySelector("body")
 const metaTheme = document.querySelector("meta[name=theme-color]")
+const fixedAddButton = document.querySelector("#addbuttonatbottom")
 
 
 // checks if any local data than syncs with myAnimeList[]
@@ -67,10 +68,12 @@ checkbox.addEventListener('change', function () {
     saveSettings()
 });
 
-// Main UI list function
+// Main Anime list function
 async function getList() {
     list.innerHTML = ""
+    // Empty list template
     if (myAnimeList.length == 0) {
+        fixedAddButton.classList.add("d-none")
         let emptyPageTemplate = `
         <div class="blank-page-cover">
             <div class="display-3 fw-bold text-light-emphasis">Animemo</div>
@@ -82,6 +85,7 @@ async function getList() {
         `
         list.insertAdjacentHTML("beforeend", emptyPageTemplate)
     }
+    else {fixedAddButton.classList.remove("d-none")}
 
     // Anime list counter
     let animeCount = document.querySelector("#animeCount")
@@ -106,7 +110,7 @@ async function getList() {
         let localData = localStorage.getItem("myAnimeList")
         let oldIndex = JSON.parse(localData).findIndex(list => list.id == anime.id)
 
-        // anime card
+        // single anime card template
         let li = `
                 <section class="list-item " id="${anime.id}">
                     <div class="position-relative rounded-3 d-flex flex-sm-column shadow overflow-hidden" style="background-color:#ffffff11;border:2px solid transparent">
@@ -150,7 +154,8 @@ async function getList() {
                                                 <li><button type="button" class="dropdown-item" onclick="removeAnime('${anime.id}')"><i class="fa-solid fa-trash me-2"></i> Remove</button></li>
                                                 <li><hr class="dropdown-divider"></li>
                                                 <li>
-                                                <button type="button" class="dropdown-item small" onclick="shareMe('${anime.name}','${anime.watched}','${anime.id}')"><i class="fa-solid fa-share me-2"></i> Share</button>
+                                                <button type="button" class="dropdown-item small" onclick="shareMe('${anime.name}','${anime.watched}','${anime.id}')">
+                                                <i class="fa-solid fa-share me-2"></i> Share</button>
                                                 </li>
                                             </ul>
                                         </div>
@@ -189,6 +194,7 @@ async function getList() {
     updateLocalStorage();
 }
 
+// Reorder list animation class
 function listAnimation(oldIndex, newIndex) {
     setTimeout(() => {
         childIndex = oldIndex + 1
@@ -200,7 +206,7 @@ function listAnimation(oldIndex, newIndex) {
     }, 10);
 }
 
-// Add anime by Url Params
+// Add anime by Url Params (shared link like https://animemo.netlify.app/?anime=11)
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const animeID = urlParams.get('anime')
@@ -217,8 +223,7 @@ async function addbyURLparams(animeID) {
     }
 }
 
-
-// Share on device
+// Share on device (if navigator.share not allowed, shares on twitter)
 function shareMe(title, episode, id) {
     const shareData = {
         title: "Animemo",
@@ -235,7 +240,8 @@ function shareMe(title, episode, id) {
         window.open('https://twitter.com/intent/tweet?text=I%20just%20watched%20' + title + '%20episode:%20' + episode + '%20%23animemo%20https%3A%2F%2Fanimemo.netlify.app/?anime=' + id, '_blank');
     }
 }
-// Edit / Save 
+
+// Edit / Save features
 function openEdit(id) {
     const editpanel = document.getElementById("editpanel-" + id)
     editpanel.style.display = ("flex")
@@ -278,7 +284,6 @@ function checkLocalStorage() {
 function updateLocalStorage() {
     localStorage.setItem("myAnimeList", JSON.stringify(myAnimeList))
 }
-
 // Watched episodes count functions
 function countUp(id) {
     let itemIndex = myAnimeList.findIndex(list => list.id == id)
